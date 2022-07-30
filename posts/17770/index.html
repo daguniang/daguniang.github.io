@@ -1,0 +1,3784 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head hexo-theme='https://github.com/volantis-x/hexo-theme-volantis/tree/4.3.1'>
+  <meta charset="utf-8">
+  <!-- SEO相关 -->
+  
+    
+  
+  <!-- 渲染优化 -->
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+  <link rel="preload" href="/css/first.css" as="style">
+  
+
+  <!-- 页面元数据 -->
+  
+  <title>使用 OneManager-php 搭建一个免费的文件分享站 - 無名小栈</title>
+  
+    <meta name="keywords" content="教程,网盘,OneDrive,OneManager,Cloudflare,Heroku,阿里云盘">
+  
+
+  
+    <meta name="description" content="一个基于 PHP 的文件分享型网盘，支持阿里云盘、OneDrive、Google Drive，可部署在 Heroku、Glitch、云函数、PHP 虚拟主机和 VPS 服务器上，可玩性很高，这篇文章来讲讲如何搭建">
+  
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="無名小栈" type="application/atom+xml">
+  
+
+  <!-- import meta -->
+  
+    
+      <meta name="msapplication-TileColor" content="#ffffff">
+    
+      <meta name="msapplication-config" content="https://cdn.jsdelivr.net/gh/volantis-x/cdn-org/blog/favicon/browserconfig.xml">
+    
+      <meta name="theme-color" content="#ffffff">
+    
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+  
+
+  <!-- link -->
+  
+
+  <!-- import link -->
+  
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="/medias/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/medias/48.png">
+  <link rel="icon" type="image/png" sizes="76x76" href="/medias/76.png">
+  <link rel="icon" type="image/png" sizes="128x128" href="/medias/128.png">
+  <link rel="shortcut icon" href="/medias/128.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/css/iziToast.min.css" data-pjax>
+  <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/izitoast@1.4.0/dist/js/iziToast.min.js" data-pjax></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css">
+  
+
+  
+    
+<link rel="stylesheet" href="/css/first.css">
+
+  
+
+  
+  <link rel="stylesheet" href="/css/style.css" media="print" onload="this.media='all';this.onload=null">
+  <noscript><link rel="stylesheet" href="/css/style.css"></noscript>
+  
+
+  <script id="loadcss"></script>
+
+  
+<script>
+if (/*@cc_on!@*/false || (!!window.MSInputMethodContext && !!document.documentMode))
+    document.write(
+	'<style>'+
+		'html{'+
+			'overflow-x: hidden !important;'+
+			'overflow-y: hidden !important;'+
+		'}'+
+		'.kill-ie{'+
+			'text-align:center;'+
+			'height: 100%;'+
+			'margin-top: 15%;'+
+			'margin-bottom: 5500%;'+
+		'}'+
+	'</style>'+
+    '<div class="kill-ie">'+
+        '<h1><b>抱歉，您的浏览器无法访问本站</b></h1>'+
+        '<h3>微软已经于2016年终止了对 Internet Explorer (IE) 10 及更早版本的支持，<br/>'+
+        '继续使用存在极大的安全隐患，请使用当代主流的浏览器进行访问。</h3><br/>'+
+        '<a target="_blank" rel="noopener" href="https://www.microsoft.com/zh-cn/WindowsForBusiness/End-of-IE-support"><strong>了解详情 ></strong></a>'+
+    '</div>');
+</script>
+
+
+<noscript>
+	<style>
+		html{
+			overflow-x: hidden !important;
+			overflow-y: hidden !important;
+		}
+		.kill-noscript{
+			text-align:center;
+			height: 100%;
+			margin-top: 15%;
+			margin-bottom: 5500%;
+		}
+	</style>
+    <div class="kill-noscript">
+        <h1><b>抱歉，您的浏览器无法访问本站</b></h1>
+        <h3>本页面需要浏览器支持（启用）JavaScript</h3><br/>
+        <a target="_blank" rel="noopener" href="https://www.baidu.com/s?wd=启用JavaScript"><strong>了解详情 ></strong></a>
+    </div>
+</noscript>
+
+
+  <!--自定义添加-->
+  <!-- 新窗口打开 -->
+<base target="_blank">
+
+<!-- 图标动画 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sviptzk/StaticFile_HEXO@latest/butterfly/css/font-awesome-animation.min.css">-->
+
+<!-- 百度统计 -->
+<script>
+  var _hmt = _hmt || [];
+  (function () {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?9267c4f28b616921175e384bf7835a4a";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+  })();
+</script>
+
+<!--artitalk
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/artitalk"></script>-->
+
+<!--图片加载失败-->
+<script>
+  document.addEventListener("error", function (e) {
+    const elem = e.target;
+    const parentElem = e.target.parentElement;
+    const parentElemClass = parentElem.classList.toString();
+    const pParentElemClass = parentElem.parentElement.classList.toString();
+    if (elem.tagName.toLowerCase() !== 'img') {
+      return;
+    }
+    elem.classList.add('fix-cursor-default', 'error');
+    if (parentElemClass === 'fancybox' && pParentElemClass === 'fancybox') {
+      parentElem.parentElement.classList.add('hideFancybox');
+      parentElem.parentElement.classList.remove('fancybox');
+      parentElem.classList.remove('fancybox');
+    } else if (parentElemClass === 'img-bg' && pParentElemClass === 'img-wrap') {
+      parentElem.parentElement.classList.add('hideFancybox');
+    } else if (parentElemClass === 'author') {
+      parentElem.parentElement.classList.add('fix-author-imgError');
+    } else if (parentElemClass.indexOf('tk-avatar') != -1) {
+      parentElem.parentElement.classList.add('fix-avatar-imgError');
+    }
+  }, true);
+</script>
+</head>
+
+
+<body>
+  <!--加载动画-->
+  <div id="loading-box">
+    <div class="loading-left-bg"></div>
+    <div class="loading-right-bg"></div>
+    <div class="spinner-box">
+      <div class="loader">
+        <div class="inner one"></div>
+        <div class="inner two"></div>
+        <div class="inner three"></div>
+      </div>
+      <div class="loading-word">
+        <p class="loading-title">無名小栈</p>站点重构中<br>
+        <a id="skip">立即进入</a>
+      </div>
+    </div>
+  </div>
+  <!--加载动画结束-->
+  
+
+<header id="l_header" class="l_header auto shadow blur show" style='opacity: 0' >
+  <div class='container'>
+  <div id='wrapper'>
+    <div class='nav-sub'>
+      <p class="title"></p>
+      <ul class='switcher nav-list-h m-phone' id="pjax-header-nav-list">
+        <li><a id="s-comment" class="fad fa-comments fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+          <li><a id="s-toc" class="s-toc fad fa-list fa-fw" target="_self" href='javascript:void(0)'></a></li>
+        
+      </ul>
+    </div>
+		<div class="nav-main">
+      
+        
+        <a id="desktopNavTitle" class="title flat-box" target="_self" href='/'>
+          
+          
+            <i class='fad fa-blog'></i>
+          
+          
+            無名小栈
+          
+        </a>
+        <!--添加动画-->
+        <a id="githubEmoji" class="title flat-box" style="display: none;" target="_self" href='/'>
+          <svg class="profile-color-modes" height="45" viewBox="0 0 106 60" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><g class="profile-color-modes-illu-group profile-color-modes-illu-red"><path d="M37.5 58.5V57.5C37.5 49.768 43.768 43.5 51.5 43.5V43.5C59.232 43.5 65.5 49.768 65.5 57.5V58.5"></path></g><g class="profile-color-modes-illu-group profile-color-modes-illu-orange"><path d="M104.07 58.5C103.401 55.092 97.7635 54.3869 95.5375 57.489C97.4039 54.6411 99.7685 48.8845 94.6889 46.6592C89.4817 44.378 86.1428 50.1604 85.3786 54.1158C85.9519 50.4768 83.7226 43.294 78.219 44.6737C72.7154 46.0534 72.7793 51.3754 74.4992 55.489C74.169 54.7601 72.4917 53.3567 70.5 52.8196"></path></g><g class="profile-color-modes-illu-group profile-color-modes-illu-purple"><path d="M5.51109 58.5V52.5C5.51109 41.4543 14.4654 32.5 25.5111 32.5C31.4845 32.5 36.8464 35.1188 40.5111 39.2709C40.7212 39.5089 40.9258 39.7521 41.1245 40"></path><path d="M27.511 49.5C29.6777 49.5 28.911 49.5 32.511 49.5"></path><path d="M27.511 56.5C29.6776 56.5 26.911 56.5 30.511 56.5"></path></g><g class="profile-color-modes-illu-group profile-color-modes-illu-green"><circle cx="5.5" cy="12.5" r="4"></circle><circle cx="18.5" cy="5.5" r="4"></circle><path d="M18.5 9.5L18.5 27.5"></path><path d="M18.5 23.5C6 23.5 5.5 23.6064 5.5 16.5"></path></g><g class="profile-color-modes-illu-group profile-color-modes-illu-blue"><g class="profile-color-modes-illu-frame"><path d="M40.6983 31.5C40.5387 29.6246 40.6456 28.0199 41.1762 27.2317C42.9939 24.5312 49.7417 26.6027 52.5428 30.2409C54.2551 29.8552 56.0796 29.6619 57.9731 29.6619C59.8169 29.6619 61.5953 29.8452 63.2682 30.211C66.0833 26.5913 72.799 24.5386 74.6117 27.2317C75.6839 28.8246 75.0259 33.7525 73.9345 37.5094C74.2013 37.9848 74.4422 38.4817 74.6555 39"></path></g><g class="profile-color-modes-illu-frame"><path d="M41.508 31.5C41.6336 31.2259 41.7672 30.9582 41.9085 30.6968C40.7845 26.9182 40.086 21.8512 41.1762 20.2317C42.9939 17.5312 49.7417 19.6027 52.5428 23.2409C54.2551 22.8552 56.0796 22.6619 57.9731 22.6619C59.8169 22.6619 61.5953 22.8452 63.2682 23.211C66.0833 19.5913 72.799 17.5386 74.6117 20.2317C75.6839 21.8246 75.0259 26.7525 73.9345 30.5094C75.1352 32.6488 75.811 35.2229 75.811 38.2283C75.811 38.49 75.8058 38.7472 75.7957 39"></path><path d="M49.4996 33V35.6757"></path><path d="M67.3375 33V35.6757"></path></g><g class="profile-color-modes-illu-frame"><path d="M41.508 31.5C41.6336 31.2259 41.7672 30.9582 41.9085 30.6968C40.7845 26.9182 40.086 21.8512 41.1762 20.2317C42.9939 17.5312 49.7417 19.6027 52.5428 23.2409C54.2551 22.8552 56.0796 22.6619 57.9731 22.6619C59.8169 22.6619 61.5953 22.8452 63.2682 23.211C66.0833 19.5913 72.799 17.5386 74.6117 20.2317C75.6839 21.8246 75.0259 26.7525 73.9345 30.5094C75.1352 32.6488 75.811 35.2229 75.811 38.2283C75.811 38.49 75.8058 38.7472 75.7957 39"></path></g><g class="profile-color-modes-illu-frame"><path d="M41.508 31.5C41.6336 31.2259 41.7672 30.9582 41.9085 30.6968C40.7845 26.9182 40.086 21.8512 41.1762 20.2317C42.9939 17.5312 49.7417 19.6027 52.5428 23.2409C54.2551 22.8552 56.0796 22.6619 57.9731 22.6619C59.8169 22.6619 61.5953 22.8452 63.2682 23.211C66.0833 19.5913 72.799 17.5386 74.6117 20.2317C75.6839 21.8246 75.0259 26.7525 73.9345 30.5094C75.1352 32.6488 75.811 35.2229 75.811 38.2283C75.811 38.49 75.8058 38.7472 75.7957 39"></path><path d="M49.4996 33V35.6757"></path><path d="M67.3375 33V35.6757"></path></g><g class="profile-color-modes-illu-frame"><path d="M41.508 31.5C41.6336 31.2259 41.7672 30.9582 41.9085 30.6968C40.7845 26.9182 40.086 21.8512 41.1762 20.2317C42.9939 17.5312 49.7417 19.6027 52.5428 23.2409C54.2551 22.8552 56.0796 22.6619 57.9731 22.6619C59.8169 22.6619 61.5953 22.8452 63.2682 23.211C66.0833 19.5913 72.799 17.5386 74.6117 20.2317C75.6839 21.8246 75.0259 26.7525 73.9345 30.5094C75.1352 32.6488 75.811 35.2229 75.811 38.2283C75.811 38.49 75.8058 38.7472 75.7957 39"></path></g><g class="profile-color-modes-illu-frame"><path d="M41.508 31.5C41.6336 31.2259 41.7672 30.9582 41.9085 30.6968C40.7845 26.9182 40.086 21.8512 41.1762 20.2317C42.9939 17.5312 49.7417 19.6027 52.5428 23.2409C54.2551 22.8552 56.0796 22.6619 57.9731 22.6619C59.8169 22.6619 61.5953 22.8452 63.2682 23.211C66.0833 19.5913 72.799 17.5386 74.6117 20.2317C75.6839 21.8246 75.0259 26.7525 73.9345 30.5094C75.1352 32.6488 75.811 35.2229 75.811 38.2283C75.811 38.49 75.8058 38.7472 75.7957 39"></path><path d="M49.4996 33V35.6757"></path><path d="M67.3375 33V35.6757"></path></g><g class="profile-color-modes-illu-frame"><path d="M73.4999 40.2236C74.9709 38.2049 75.8108 35.5791 75.8108 32.2283C75.8108 29.2229 75.1351 26.6488 73.9344 24.5094C75.0258 20.7525 75.6838 15.8246 74.6116 14.2317C72.7989 11.5386 66.0832 13.5913 63.2681 17.211C61.5952 16.8452 59.8167 16.6619 57.973 16.6619C56.0795 16.6619 54.2549 16.8552 52.5427 17.2409C49.7416 13.6027 42.9938 11.5312 41.176 14.2317C40.0859 15.8512 40.7843 20.9182 41.9084 24.6968C41.003 26.3716 40.4146 28.3065 40.2129 30.5"></path><path d="M82.9458 30.5471L76.8413 31.657"></path><path d="M76.2867 34.4319L81.8362 37.7616"></path><path d="M49.4995 27.8242V30.4999"></path><path d="M67.3374 27.8242V30.4998"></path></g><g class="profile-color-modes-illu-frame"><path d="M45.3697 34.2658C41.8877 32.1376 39.7113 28.6222 39.7113 23.2283C39.7113 20.3101 40.3483 17.7986 41.4845 15.6968C40.3605 11.9182 39.662 6.85125 40.7522 5.23168C42.5699 2.53117 49.3177 4.6027 52.1188 8.24095C53.831 7.85521 55.6556 7.66186 57.5491 7.66186C59.3929 7.66186 61.1713 7.84519 62.8442 8.21095C65.6593 4.59134 72.375 2.5386 74.1877 5.23168C75.2599 6.82461 74.6019 11.7525 73.5105 15.5094C74.7112 17.6488 75.3869 20.2229 75.3869 23.2283C75.3869 28.6222 73.2105 32.1376 69.7285 34.2658C70.8603 35.5363 72.6057 38.3556 73.3076 40"></path><path d="M49.0747 19.8242V22.4999"></path><path d="M54.0991 28C54.6651 29.0893 55.7863 30.0812 57.9929 30.0812C59.0642 30.0812 59.8797 29.8461 60.5 29.4788"></path><path d="M66.9126 19.8242V22.4999"></path><path d="M33.2533 20.0237L39.0723 22.1767"></path><path d="M39.1369 25.0058L33.0935 27.3212"></path><path d="M81.8442 19.022L76.0252 21.1751"></path><path d="M75.961 24.0041L82.0045 26.3196"></path></g><g class="profile-color-modes-illu-frame"><path d="M73.4999 40.2236C74.9709 38.2049 75.8108 35.5791 75.8108 32.2283C75.8108 29.2229 75.1351 26.6488 73.9344 24.5094C75.0258 20.7525 75.6838 15.8246 74.6116 14.2317C72.7989 11.5386 66.0832 13.5913 63.2681 17.211C61.5952 16.8452 59.8167 16.6619 57.973 16.6619C56.0795 16.6619 54.2549 16.8552 52.5427 17.2409C49.7416 13.6027 42.9938 11.5312 41.176 14.2317C40.0859 15.8512 40.7843 20.9182 41.9084 24.6968C41.003 26.3716 40.4146 28.3065 40.2129 30.5"></path><path d="M82.9458 30.5471L76.8413 31.657"></path><path d="M76.2867 34.4319L81.8362 37.7616"></path><path d="M49.4995 27.8242V30.4999"></path><path d="M67.3374 27.8242V30.4998"></path></g><g class="profile-color-modes-illu-frame"><path d="M40.6983 31.5C40.5387 29.6246 40.6456 28.0199 41.1762 27.2317C42.9939 24.5312 49.7417 26.6027 52.5428 30.2409C54.2551 29.8552 56.0796 29.6619 57.9731 29.6619C59.8169 29.6619 61.5953 29.8452 63.2682 30.211C66.0833 26.5913 72.799 24.5386 74.6117 27.2317C75.6839 28.8246 75.0259 33.7525 73.9345 37.5094C74.2013 37.9848 74.4422 38.4817 74.6555 39"></path></g></g></svg>
+        </a>
+      
+
+			<div class='menu navigation'>
+				<ul class='nav-list-h m-pc'>
+          
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" 
+                  
+                  
+                  >
+                  <i class='fad fa-books fa-fw'></i>索引
+                </a>
+                
+                  <ul class="list-v">
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  <i class='fad fa-tags fa-fw'></i>标签
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  <i class='fad fa-folder-open fa-fw'></i>分类
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/archive/
+                  
+                  
+                  
+                    id="archive"
+                  >
+                  <i class='fad fa-archive fa-fw'></i>归档
+                </a>
+                
+              </li>
+            
+          
+                    
+                  </ul>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" 
+                  
+                  
+                  >
+                  <i class='fad fa-link fa-fw'></i>链接
+                </a>
+                
+                  <ul class="list-v">
+                    
+                      
+            
+              <li class='header'>
+                <i class='fad fa-users fa-fw'></i>网上邻居
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/friends/
+                  
+                  
+                  
+                    id="friends"
+                  >
+                  小伙伴和大佬们
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <hr>
+            
+          
+                    
+                      
+            
+              <li class='header'>
+                <i class='fad fa-browser fa-fw'></i>多线部署
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://blog.imsyy.top/
+                  
+                  
+                  
+                    id="https:blogimsyytop"
+                  >
+                  Cloudflare 主站
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://hexo.imsyy.top/
+                  
+                  
+                  
+                    id="https:hexoimsyytop"
+                  >
+                  Vercel 镜像站
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://imsyy.gitee.io/
+                  
+                  
+                  
+                    id="https:imsyygiteeio"
+                  >
+                  Gitee 镜像站
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <hr>
+            
+          
+                    
+                      
+            
+              <li class='header'>
+                <i class='fad fa-subway fa-fw'></i>友链接力
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://travellings.link
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:travellingslink"
+                  >
+                  Travellings
+                </a>
+                
+              </li>
+            
+          
+                    
+                  </ul>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" 
+                  
+                  
+                  >
+                  <i class='fad fa-file-alt fa-fw'></i>页面
+                </a>
+                
+                  <ul class="list-v">
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/music/
+                  
+                  
+                  
+                    id="music"
+                  >
+                  <i class='fad fa-list-music fa-fw'></i>音乐
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/photo/
+                  
+                  
+                  
+                    id="photo"
+                  >
+                  <i class='fad fa-image fa-fw'></i>相册
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/notes/
+                  
+                  
+                  
+                    id="notes"
+                  >
+                  <i class='fad fa-book fa-fw'></i>笔记
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/box/
+                  
+                  
+                  
+                    id="box"
+                  >
+                  <i class='fad fa-box fa-fw'></i>宝盒
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/books/
+                  
+                  
+                  
+                    id="books"
+                  >
+                  <i class='fad fa-books fa-fw'></i>书单
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/game/
+                  
+                  
+                  
+                    id="game"
+                  >
+                  <i class='fad fa-gamepad-alt fa-fw'></i>娱乐
+                </a>
+                
+              </li>
+            
+          
+                    
+                  </ul>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" 
+                  
+                  
+                  >
+                  <i class='fad fa-tasks-alt fa-fw'></i>管理
+                </a>
+                
+                  <ul class="list-v">
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box header toggle-mode-btn">
+                  <i class='fad fa-adjust fa-fw'></i>明暗切换
+                </a>
+              <li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://status.imsyy.top/
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:statusimsyytop"
+                  >
+                  <i class='fad fa-monitor-heart-rate fa-fw'></i>站点监测
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://ee.myssl.com/sslcert
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:eemysslcomsslcert"
+                  >
+                  <i class='fad fa-lock-alt fa-fw'></i>SSL 管理
+                </a>
+                
+              </li>
+            
+          
+                    
+                  </ul>
+                
+              </li>
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" 
+                  
+                  
+                  >
+                  <i class='fad fa-info-circle fa-fw'></i>关于
+                </a>
+                
+                  <ul class="list-v">
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/history/
+                  
+                  
+                  
+                    id="history"
+                  >
+                  <i class='fad fa-history fa-fw'></i>建站史
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/messages/
+                  
+                  
+                  
+                    id="messages"
+                  >
+                  <i class='fad fa-comment-alt-lines fa-fw'></i>留言板
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/thanks/
+                  
+                  
+                  
+                    id="thanks"
+                  >
+                  <i class='fad fa-heart fa-fw'></i>鸣谢板
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  <i class='fad fa-smile-wink fa-fw'></i>关于我
+                </a>
+                
+              </li>
+            
+          
+                    
+                  </ul>
+                
+              </li>
+            
+          
+          
+            
+            
+              
+                <li>
+                  <a class="menuitem flat-box">
+                    <i class='fad fa-compact-disc fa-fw music'></i>音乐
+                  </a>
+                  <ul class="list-v">
+                    <li>
+                      <div class="aplayer-container">
+                        
+
+  
+    <meting-js
+      theme='#767676'
+      autoplay='false'
+      volume='0.7'
+      loop='all'
+      order='random'
+      fixed='false'
+      list-max-height='320px'
+      server='tencent'
+      type='playlist'
+      id='7986662494'
+      list-folded='true'>
+    </meting-js>
+  
+
+
+                      </div>
+                    </li>
+                  </ul>
+                <li>
+              
+            
+          
+          
+            
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" 
+                  
+                  
+                  >
+                  <i class='fad fa-angle-double-right fa-fw'></i>更多
+                </a>
+                
+                  <ul class="list-v">
+                    
+                      
+            
+              <li class='header'>
+                <i class='fad fa-browser fa-fw'></i>其他站点
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://imsyy.top/
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:imsyytop"
+                  >
+                  我的主页
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://music.imsyy.top/
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:musicimsyytop"
+                  >
+                  聆听音乐
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://photo.imsyy.top/
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:photoimsyytop"
+                  >
+                  时光相册
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://lab.imsyy.top/
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:labimsyytop"
+                  >
+                  网页实验室
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://web.imsyy.top/
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:webimsyytop"
+                  >
+                  网页导航站
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://drive.imsyy.top/
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:driveimsyytop"
+                  >
+                  文件分享站
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <hr>
+            
+          
+                    
+                      
+            
+              <li class='header'>
+                <i class='fad fa-blog fa-fw'></i>博客分站
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://wp.imsyy.top/
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:wpimsyytop"
+                  >
+                  WordPress 分站
+                </a>
+                
+              </li>
+            
+          
+                    
+                  </ul>
+                
+              </li>
+            
+          
+          
+				</ul>
+			</div>
+
+      <!--添加天气-->
+      <div id="tp-weather-widget"></div>
+      <script>
+        (function(a,h,g,f,e,d,c,b){b=function(){d=h.createElement(g);c=h.getElementsByTagName(g)[0];d.src=e;d.charset="utf-8";d.async=1;c.parentNode.insertBefore(d,c)};a["SeniverseWeatherWidgetObject"]=f;a[f]||(a[f]=function(){(a[f].q=a[f].q||[]).push(arguments)});a[f].l=+new Date();if(a.attachEvent){a.attachEvent("onload",b)}else{a.addEventListener("load",b,false)}}(window,document,"script","SeniverseWeatherWidget","//cdn.sencdn.com/widget2/static/js/bundle.js?t="+parseInt((new Date().getTime() / 100000000).toString(),10)));
+        window.SeniverseWeatherWidget('show', {
+          flavor: "slim",
+          location: "WX4FBXXFKE4F",
+          geolocation: true,
+          language: "zh-Hans",
+          unit: "c",
+          theme: "auto",
+          token: "7dbd9b5f-b2b0-4186-b486-d8460a464f79",
+          hover: "enabled",
+          container: "tp-weather-widget"
+        })
+      </script>
+      <!--添加天气结束-->
+
+      <div class="m_search">
+        <form name="searchform" class="form u-search-form">
+          <i class="icon fad fa-search fa-fw"></i>
+          <input type="text" class="input u-search-input" placeholder="想找点什么~" />
+        </form>
+      </div>
+
+			<ul class='switcher nav-list-h m-phone'>
+				
+					<li><a class="s-search fad fa-search fa-fw" target="_self" href='javascript:void(0)'></a></li>
+				
+				<li>
+          <a class="s-menu fad fa-bars fa-fw" target="_self" href='javascript:void(0)'></a>
+          <ul class="menu-phone list-v navigation white-box">
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" 
+                  
+                  
+                  >
+                  <i class='fad fa-books fa-fw'></i>索引
+                </a>
+                
+                  <ul class="list-v">
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/tags/
+                  
+                  
+                  
+                    id="tags"
+                  >
+                  <i class='fad fa-tags fa-fw'></i>标签
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/categories/
+                  
+                  
+                  
+                    id="categories"
+                  >
+                  <i class='fad fa-folder-open fa-fw'></i>分类
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/archive/
+                  
+                  
+                  
+                    id="archive"
+                  >
+                  <i class='fad fa-archive fa-fw'></i>归档
+                </a>
+                
+              </li>
+            
+          
+                    
+                  </ul>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" 
+                  
+                  
+                  >
+                  <i class='fad fa-link fa-fw'></i>链接
+                </a>
+                
+                  <ul class="list-v">
+                    
+                      
+            
+              <li class='header'>
+                <i class='fad fa-users fa-fw'></i>网上邻居
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/friends/
+                  
+                  
+                  
+                    id="friends"
+                  >
+                  小伙伴和大佬们
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <hr>
+            
+          
+                    
+                      
+            
+              <li class='header'>
+                <i class='fad fa-browser fa-fw'></i>多线部署
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://blog.imsyy.top/
+                  
+                  
+                  
+                    id="https:blogimsyytop"
+                  >
+                  Cloudflare 主站
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://hexo.imsyy.top/
+                  
+                  
+                  
+                    id="https:hexoimsyytop"
+                  >
+                  Vercel 镜像站
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://imsyy.gitee.io/
+                  
+                  
+                  
+                    id="https:imsyygiteeio"
+                  >
+                  Gitee 镜像站
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <hr>
+            
+          
+                    
+                      
+            
+              <li class='header'>
+                <i class='fad fa-subway fa-fw'></i>友链接力
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://travellings.link
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:travellingslink"
+                  >
+                  Travellings
+                </a>
+                
+              </li>
+            
+          
+                    
+                  </ul>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" 
+                  
+                  
+                  >
+                  <i class='fad fa-file-alt fa-fw'></i>页面
+                </a>
+                
+                  <ul class="list-v">
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/music/
+                  
+                  
+                  
+                    id="music"
+                  >
+                  <i class='fad fa-list-music fa-fw'></i>音乐
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/photo/
+                  
+                  
+                  
+                    id="photo"
+                  >
+                  <i class='fad fa-image fa-fw'></i>相册
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/notes/
+                  
+                  
+                  
+                    id="notes"
+                  >
+                  <i class='fad fa-book fa-fw'></i>笔记
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/box/
+                  
+                  
+                  
+                    id="box"
+                  >
+                  <i class='fad fa-box fa-fw'></i>宝盒
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/books/
+                  
+                  
+                  
+                    id="books"
+                  >
+                  <i class='fad fa-books fa-fw'></i>书单
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/game/
+                  
+                  
+                  
+                    id="game"
+                  >
+                  <i class='fad fa-gamepad-alt fa-fw'></i>娱乐
+                </a>
+                
+              </li>
+            
+          
+                    
+                  </ul>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" 
+                  
+                  
+                  >
+                  <i class='fad fa-tasks-alt fa-fw'></i>管理
+                </a>
+                
+                  <ul class="list-v">
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box header toggle-mode-btn">
+                  <i class='fad fa-adjust fa-fw'></i>明暗切换
+                </a>
+              <li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://status.imsyy.top/
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:statusimsyytop"
+                  >
+                  <i class='fad fa-monitor-heart-rate fa-fw'></i>站点监测
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://ee.myssl.com/sslcert
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:eemysslcomsslcert"
+                  >
+                  <i class='fad fa-lock-alt fa-fw'></i>SSL 管理
+                </a>
+                
+              </li>
+            
+          
+                    
+                  </ul>
+                
+              </li>
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" 
+                  
+                  
+                  >
+                  <i class='fad fa-info-circle fa-fw'></i>关于
+                </a>
+                
+                  <ul class="list-v">
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/history/
+                  
+                  
+                  
+                    id="history"
+                  >
+                  <i class='fad fa-history fa-fw'></i>建站史
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/messages/
+                  
+                  
+                  
+                    id="messages"
+                  >
+                  <i class='fad fa-comment-alt-lines fa-fw'></i>留言板
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/thanks/
+                  
+                  
+                  
+                    id="thanks"
+                  >
+                  <i class='fad fa-heart fa-fw'></i>鸣谢板
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=/about/
+                  
+                  
+                  
+                    id="about"
+                  >
+                  <i class='fad fa-smile-wink fa-fw'></i>关于我
+                </a>
+                
+              </li>
+            
+          
+                    
+                  </ul>
+                
+              </li>
+            
+          
+            
+              
+            
+              
+            
+          
+            
+              
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" 
+                  
+                  
+                  >
+                  <i class='fad fa-angle-double-right fa-fw'></i>更多
+                </a>
+                
+                  <ul class="list-v">
+                    
+                      
+            
+              <li class='header'>
+                <i class='fad fa-browser fa-fw'></i>其他站点
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://imsyy.top/
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:imsyytop"
+                  >
+                  我的主页
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://music.imsyy.top/
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:musicimsyytop"
+                  >
+                  聆听音乐
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://photo.imsyy.top/
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:photoimsyytop"
+                  >
+                  时光相册
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://lab.imsyy.top/
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:labimsyytop"
+                  >
+                  网页实验室
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://web.imsyy.top/
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:webimsyytop"
+                  >
+                  网页导航站
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://drive.imsyy.top/
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:driveimsyytop"
+                  >
+                  文件分享站
+                </a>
+                
+              </li>
+            
+          
+                    
+                      
+            
+              <hr>
+            
+          
+                    
+                      
+            
+              <li class='header'>
+                <i class='fad fa-blog fa-fw'></i>博客分站
+              </li>
+            
+          
+                    
+                      
+            
+              <li>
+                <a class="menuitem flat-box faa-parent animated-hover" href=https://wp.imsyy.top/
+                  
+                  
+                    target="_blank"
+                  
+                  
+                    id="https:wpimsyytop"
+                  >
+                  WordPress 分站
+                </a>
+                
+              </li>
+            
+          
+                    
+                  </ul>
+                
+              </li>
+            
+          
+            
+          </ul>
+        </li>
+			</ul>
+		</div>
+	</div>
+  </div>
+</header>
+
+  <div id="l_body">
+    <div id="l_cover">
+  
+    
+        <div id="full" class='cover-wrapper post blank' style="display: none;">
+          
+            <div class='cover-bg lazyload placeholder' data-bg=""></div>
+          
+          
+          <div id="scroll-down" style="display: none;"><i class="fa fa-chevron-down scroll-down-effects"></i></div>
+        </div>
+    
+  
+  </div>
+
+    <div id="safearea">
+      <div class="body-wrapper" id="pjax-container">
+        
+
+<div class='l_main'>
+  <article class="article post white-box reveal md shadow floatable article-type-post" id="post" itemscope itemprop="blogPost">
+  
+
+
+  
+  <div class="article-meta" id="top">
+    
+    
+    
+      <h1 class="title">
+        使用 OneManager-php 搭建一个免费的文件分享站
+      </h1>
+      <div class='new-meta-box'>
+        
+          
+            
+<div class='new-meta-item author'>
+  <a class='author' href="/" rel="nofollow">
+    <img no-lazy src="https://img.imsyy.top/other/avatar.png">
+    <p>無名</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  <div class='new-meta-item category'>
+    <a class='notlink'>
+      <i class="fad fa-folder-open fa-fw" aria-hidden="true"></i>
+      <a class="category-link" href="/categories/%E4%B8%80%E4%BA%9B%E6%95%99%E7%A8%8B/">一些教程</a>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date" itemprop="dateUpdated" datetime="2021-10-29T16:15:39+08:00">
+  <a class='notlink'>
+    <i class="fad fa-edit fa-fw" aria-hidden="true"></i>
+    <p>更新于：2021年10月29日</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+  <div class="new-meta-item browse leancloud">
+    <a class='notlink'>
+      
+      <div id="lc-pv" data-title="使用 OneManager-php 搭建一个免费的文件分享站" data-path="/posts/17770/">
+        <i class="fad fa-eye fa-fw" aria-hidden="true"></i>
+        <span id='number'><i class="fas fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span>
+        次浏览
+      </div>
+    </a>
+  </div>
+
+
+          
+        
+          
+            
+  <div class="new-meta-item wordcount">
+    <a class='notlink'>
+      <i class="fad fa-keyboard fa-fw" aria-hidden="true"></i>
+      <p>字数：1.9k字</p>
+    </a>
+  </div>
+  <div class="new-meta-item readtime">
+    <a class='notlink'>
+      <i class="fad fa-hourglass-half fa-fw" aria-hidden="true"></i>
+      <p>时长：7分钟</p>
+    </a>
+  </div>
+
+
+          
+        
+      </div>
+    
+  </div>
+
+
+  
+  
+  <p>阿里的服务器到期了，也没钱再续，于是原来的网盘系统 <a target="_blank" rel="noopener" href="https://github.com/cloudreve/Cloudreve">Cloudreve</a> 就废弃了。由于原来的后端储存使用的是微软的 OneDrive，便想着再找一个无需主机就能实现 OneDrive 文件共享的程序，本来想使用 <code>Oneindex</code> 的，但是原作者已经删库了，并且已经多年未更新了，只好放弃。不过最近在逛 GitHub 的时候，偶然发现了 <a target="_blank" rel="noopener" href="https://github.com/qkqpttgf/OneManager-php">OneManager-php</a> 这个只需要 <code>PHP</code> 环境便能部署运行的程序，于是便试着搞一搞。</p>
+<h2 id="程序界面"><a href="#程序界面" class="headerlink" title="程序界面"></a>程序界面</h2><div class="tag link"><a class="link-card" title="無名の资源库" target="_blank" rel="noopener" href="https://share.imsyy.top/"><div class="left"><img src="https://cdn.jsdelivr.net/gh/imsyy/file/js/share/favicon.ico" class="lazyload placeholder" data-srcset="https://cdn.jsdelivr.net/gh/imsyy/file/js/share/favicon.ico" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div><div class="right"><p class="text">無名の资源库</p><p class="url">https://share.imsyy.top/</p></div></a></div>
+<div class="gallery stretch" col='1'>
+              <p><img src="https://img.imsyy.top/post/17770/1.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/1.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg" alt="主界面"><br><img src="https://img.imsyy.top/post/17770/2.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/2.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg" alt="文件列表"></p>
+            </div>
+
+<h2 id="前期准备"><a href="#前期准备" class="headerlink" title="前期准备"></a>前期准备</h2><p>本文主要分为两种方式来讲解如何搭建</p>
+<ul>
+<li>腾讯云 <code>SCF 云函数</code> + 自定义域名 （ <strong>推荐</strong>，国内访问速度快 ）</li>
+<li><code>Heroku</code> + <code>Cloudflare</code> （ 不推荐，各种小问题，以及自定义域名需要绑定信用卡 ）</li>
+</ul>
+<h3 id="准备网盘"><a href="#准备网盘" class="headerlink" title="准备网盘"></a>准备网盘</h3><h4 id="阿里云盘"><a href="#阿里云盘" class="headerlink" title="阿里云盘"></a>阿里云盘</h4><p>阿里新出的网盘，新用户注册大概会有 1T 左右的空间吧，内测用户 2T ~ 8T 大小的都有。这个网盘目前还行，不限速，但说不好过一段时间会不会变的和百度网盘一样恶心 （ 我觉得大概率会 ）。</p>
+<h4 id="OneDrive"><a href="#OneDrive" class="headerlink" title="OneDrive"></a>OneDrive</h4><p>OneDrive 账号，最好储存为 5T 大小的那种。这方面的教程百度上一搜一大把，这里不做过多阐述，我这里使用的是 Microsoft 365 E5 开发者账号。当然个人版账号也是可以的，只是空间通常仅为 15G，自行斟酌。</p>
+<h3 id="注册云服务商账号"><a href="#注册云服务商账号" class="headerlink" title="注册云服务商账号"></a>注册云服务商账号</h3><details ><summary> 腾讯云 SCF 云函数 方式部署 </summary>
+              <div class='content'>
+              <ol><li><p>注册腾讯云<br>这个没啥好说的，注册就完了。</p></li><li><p>注册域名<br>非必要，仅自定义域名时需要填写。</p><div class="note warning"><p>自定义域名需要域名已实名认证并备案</p></div>腾讯云也时不时的有一些免费买域名的活动，也可以考虑考虑。</li></ol>
+              </div>
+            </details>
+
+<details ><summary> Heroku + Cloudflare 方式部署 </summary>
+              <div class='content'>
+              <ol><li>注册 Heroku<div class="tag link"><a class="link-card" title="Heroku 账号注册" target="_blank" rel="noopener" href="https://signup.heroku.com/"><div class="left"><img src="https://img.imsyy.top/logo/heroku.ico" class="lazyload placeholder" data-srcset="https://img.imsyy.top/logo/heroku.ico" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div><div class="right"><p class="text">Heroku 账号注册</p><p class="url">https://signup.heroku.com/</p></div></a></div></li></ol><p><strong>注意：</strong></p><ul><li>注册时最好注册两个账号，因为 Heroku 免费套餐每月只能运行 550 小时，两个账号可实现全月不间断运行</li><li>注册时可能需要使用<strong>代理访问</strong>，否则无法通过谷歌人机验证<div class="gallery stretch" col='1'>            <p><img src="https://img.imsyy.top/post/17770/3.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/3.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg" alt="注意注册时的谷歌人机验证"></p>          </div></li></ul><ol start="2"><li>注册 Cloudflare<div class="tag link"><a class="link-card" title="Cloudflare 账号注册" target="_blank" rel="noopener" href="https://dash.cloudflare.com/sign-up"><div class="left"><img src="https://img.imsyy.top/logo/cloudflare.ico" class="lazyload placeholder" data-srcset="https://img.imsyy.top/logo/cloudflare.ico" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div><div class="right"><p class="text">Cloudflare 账号注册</p><p class="url">https://dash.cloudflare.com/sign-up</p></div></a></div>Cloudflare 账号这玩意应该是人手一个了，就不细说了</li></ol>
+              </div>
+            </details>
+
+<h2 id="服务部署"><a href="#服务部署" class="headerlink" title="服务部署"></a>服务部署</h2><h3 id="腾讯云-SCF-云函数"><a href="#腾讯云-SCF-云函数" class="headerlink" title="腾讯云 SCF 云函数"></a>腾讯云 SCF 云函数</h3><div class="note warning"><p>SCF 新增限制，环境变量整体 <strong>最大4KB</strong>，所以 <strong>最多添加4个盘</strong></p></div>
+<ul>
+<li><p>前往 腾讯云 SCF 管理页面</p>
+<div class="tag link"><a class="link-card" title="腾讯云 SCF" target="_blank" rel="noopener" href="https://console.cloud.tencent.com/scf/"><div class="left"><img src="https://img.imsyy.top/logo/tencentcloud.ico" class="lazyload placeholder" data-srcset="https://img.imsyy.top/logo/tencentcloud.ico" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div><div class="right"><p class="text">腾讯云 SCF</p><p class="url">https://console.cloud.tencent.com/scf/</p></div></a></div></li>
+<li><p>点击左侧的 <code>函数服务</code>，然后点击 <code>新建</code></p>
+</li>
+<li><p>在创建方式里选择 <code>模板创建</code>，然后在模糊搜索里输入 <code>onedrive</code></p>
+<div class="gallery stretch" col='1'>
+              <p><img src="https://img.imsyy.top/post/17770/20.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/20.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg" alt="创建 OnedriveWithSCF 模板"></p>
+            </div></li>
+<li><p>选中 <code>OnedriveWithSCF</code>，点击下一步</p>
+</li>
+<li><p><code>函数名称</code>、<code>地域</code> 及 <code>描述</code> 可随意更改</p>
+<div class="gallery stretch" col='1'>
+              <p><img src="https://img.imsyy.top/post/17770/21.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/21.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg" alt="随意填写"></p>
+            </div></li>
+<li><p>在触发器配置处请检查 <code>集成响应</code> 是否开启</p>
+<div class="gallery stretch" col='1'>
+              <p><img src="https://img.imsyy.top/post/17770/22.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/22.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg" alt="检查集成响应是否开启"></p>
+            </div></li>
+<li><p>点击完成后在左侧点击 <code>触发管理</code> 页面下的 <code>访问路径</code> 进入程序配置</p>
+</li>
+</ul>
+<h3 id="Heroku-Cloudflare"><a href="#Heroku-Cloudflare" class="headerlink" title="Heroku + Cloudflare"></a>Heroku + Cloudflare</h3><div class="note warning"><p>该方法已不推荐使用</p></div>
+<h4 id="Heroku-端部署"><a href="#Heroku-端部署" class="headerlink" title="Heroku 端部署"></a>Heroku 端部署</h4><ul>
+<li><p>前往 OneManager-php 项目的 GitHub 仓库并 Fork（ 这里的 Fork 并非强制性要求 ）</p>
+<div class="tag link"><a class="link-card" title="OneManager-php" target="_blank" rel="noopener" href="https://github.com/qkqpttgf/OneManager-php"><div class="left"><img src="https://img.imsyy.top/logo/github.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/logo/github.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div><div class="right"><p class="text">OneManager-php</p><p class="url">https://github.com/qkqpttgf/OneManager-php</p></div></a></div></li>
+<li><p>点击 Readme.md 中的 <code>Deploy to Heroku</code> 按钮</p>
+<div class="img-wrap"><div class="img-bg"><img class="img lazyload placeholder" src="https://img.imsyy.top/post/17770/17.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/17.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div></div></li>
+<li><p>跳转到 Heroku 后在 <code>App name</code> 栏中输入程序名称</p>
+<div class="note warning"><p>这里输入的内容即为将部署程序的子域名前缀</p></div>
+<div class="img-wrap"><div class="img-bg"><img class="img lazyload placeholder" src="https://img.imsyy.top/post/17770/4.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/4.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div></div></li>
+<li><p>输入完成后点击 <code>Deploy app</code></p>
+</li>
+<li><p>部署成功后点击 <code>View</code> 即可进入配置页面</p>
+<div class="img-wrap"><div class="img-bg"><img class="img lazyload placeholder" src="https://img.imsyy.top/post/17770/5.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/5.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div></div></li>
+</ul>
+<h4 id="Cloudflare-端部署"><a href="#Cloudflare-端部署" class="headerlink" title="Cloudflare 端部署"></a>Cloudflare 端部署</h4><p>其实到此为止程序已经部署成功了，已经可以访问 <code>Heroku</code> 为你分配的域名来访问了，但是要想实现 24 小时不间断访问，则需要再注册一个 Heroku 账号并执行上述操作，并<strong>确保两个网址的内容一致</strong>，然后借助 <code>Cloudflare Workers</code> 来实现</p>
+<ul>
+<li><p>进入 <code>Workers</code></p>
+<div class="img-wrap"><div class="img-bg"><img class="img lazyload placeholder" src="https://img.imsyy.top/post/17770/14.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/14.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div></div></li>
+<li><p>在脚本输入框中粘贴以下内容并将两个 Heroku 账号中程序部署的网址填入下方单双日</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 单日</span></span><br><span class="line"><span class="keyword">const</span> SingleDay = <span class="string">&#x27;第一个网址&#x27;</span></span><br><span class="line"><span class="comment">// 双日</span></span><br><span class="line"><span class="keyword">const</span> DoubleDay = <span class="string">&#x27;第二个网址&#x27;</span></span><br><span class="line"><span class="comment">// 一切给CF代理，true/false</span></span><br><span class="line"><span class="keyword">const</span> CFproxy = <span class="literal">true</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">// 由于heroku不绑卡不能自定义域名，就算绑卡后https也不方便</span></span><br><span class="line"><span class="comment">// 另外免费套餐每月550小时，有些人不够用</span></span><br><span class="line"><span class="comment">// 于是在CF Workers使用此代码，分单双日拉取不同heroku帐号下的相同网页</span></span><br><span class="line"><span class="comment">// 只改上面，下面不用动</span></span><br><span class="line"> </span><br><span class="line">addEventListener(<span class="string">&#x27;fetch&#x27;</span>, <span class="function"><span class="params">event</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> nd = <span class="keyword">new</span> <span class="built_in">Date</span>();</span><br><span class="line">    <span class="keyword">if</span> (nd.getDate()%<span class="number">2</span>) &#123;</span><br><span class="line">        host = SingleDay</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        host = DoubleDay</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!CFproxy) &#123;</span><br><span class="line">        <span class="keyword">let</span> url=<span class="keyword">new</span> URL(event.request.url);</span><br><span class="line">        <span class="keyword">if</span> (url.protocol == <span class="string">&#x27;http:&#x27;</span>) &#123;</span><br><span class="line">            url.protocol = <span class="string">&#x27;https:&#x27;</span></span><br><span class="line">            response = Response.redirect(url.href);</span><br><span class="line">            event.respondWith( response );</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            url.hostname=host;</span><br><span class="line">            <span class="keyword">let</span> request=<span class="keyword">new</span> Request(url,event.request);</span><br><span class="line">            event.respondWith( fetch(request) )</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        event.respondWith( fetchAndApply(event.request) );</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br><span class="line"> </span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">fetchAndApply</span>(<span class="params">request</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">let</span> response = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">let</span> url = <span class="keyword">new</span> URL(request.url);</span><br><span class="line">    <span class="keyword">if</span> (url.protocol == <span class="string">&#x27;http:&#x27;</span>) &#123;</span><br><span class="line">        url.protocol = <span class="string">&#x27;https:&#x27;</span></span><br><span class="line">        response = Response.redirect(url.href);</span><br><span class="line">        <span class="keyword">return</span> response;</span><br><span class="line">    &#125;</span><br><span class="line">    url.host = host;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">let</span> method = request.method;</span><br><span class="line">    <span class="keyword">let</span> body = request.body;</span><br><span class="line">    <span class="keyword">let</span> request_headers = request.headers;</span><br><span class="line">    <span class="keyword">let</span> new_request_headers = <span class="keyword">new</span> Headers(request_headers);</span><br><span class="line"> </span><br><span class="line">    new_request_headers.set(<span class="string">&#x27;Host&#x27;</span>, url.host);</span><br><span class="line">    new_request_headers.set(<span class="string">&#x27;Referer&#x27;</span>, request.url);</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">let</span> original_response = <span class="keyword">await</span> fetch(url.href, &#123;</span><br><span class="line">        <span class="attr">method</span>: method,</span><br><span class="line">        <span class="attr">body</span>: body,</span><br><span class="line">        <span class="attr">headers</span>: new_request_headers</span><br><span class="line">    &#125;);</span><br><span class="line"> </span><br><span class="line">    response = <span class="keyword">new</span> Response(original_response.body, &#123;</span><br><span class="line">        <span class="attr">status</span>: original_response.status,</span><br><span class="line">        <span class="attr">headers</span>: original_response.headers</span><br><span class="line">    &#125;)</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">return</span> response;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>填写完成后点击保存并部署即可看到 Cloudflare 给你提供的子域</p>
+<div class="img-wrap"><div class="img-bg"><img class="img lazyload placeholder" src="https://img.imsyy.top/post/17770/16.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/16.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div></div></li>
+<li><p>至此教程完成</p>
+</li>
+</ul>
+<h2 id="程序配置"><a href="#程序配置" class="headerlink" title="程序配置"></a>程序配置</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><ul>
+<li><p>跳转到安装页面点击开始安装</p>
+<div class="img-wrap"><div class="img-bg"><img class="img lazyload placeholder" src="https://img.imsyy.top/post/17770/6.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/6.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div></div></li>
+<li><p>选择简体中文再点击新建 <code>API Key</code></p>
+<div class="img-wrap"><div class="img-bg"><img class="img lazyload placeholder" src="https://img.imsyy.top/post/17770/7.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/7.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div></div></li>
+<li><p>点击 Reveal 后复制 <code>API Key</code></p>
+<div class="img-wrap"><div class="img-bg"><img class="img lazyload placeholder" src="https://img.imsyy.top/post/17770/8.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/8.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div></div></li>
+<li><p>再输入后台管理密码</p>
+<div class="note warning"><p>必须输入，否则后期无法进入后台</p></div>
+<div class="img-wrap"><div class="img-bg"><img class="img lazyload placeholder" src="https://img.imsyy.top/post/17770/9.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/9.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div></div></li>
+<li><p>确认后进入主页面左上角进入后台添加盘</p>
+<div class="img-wrap"><div class="img-bg"><img class="img lazyload placeholder" src="https://img.imsyy.top/post/17770/10.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/10.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div></div></li>
+<li><p>输入标签及显示名称</p>
+</li>
+<li><p>选择你的 OneDrive 对应的版本</p>
+<div class="note green"><p>各种 A1，A1P，E3，E5 均为国际版</p></div>
+<div class="img-wrap"><div class="img-bg"><img class="img lazyload placeholder" src="https://img.imsyy.top/post/17770/11.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/11.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div></div></li>
+<li><p>点击确认后跳转至微软账号登陆界面</p>
+</li>
+<li><p>登录成功后如图所示</p>
+<div class="img-wrap"><div class="img-bg"><img class="img lazyload placeholder" src="https://img.imsyy.top/post/17770/12.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/12.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div></div>
+<div class="img-wrap"><div class="img-bg"><img class="img lazyload placeholder" src="https://img.imsyy.top/post/17770/13.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/13.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg" alt="程序默认主界面"/></div><span class="image-caption">程序默认主界面</span></div></li>
+</ul>
+<h3 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h3><h4 id="云函数部署方式更新"><a href="#云函数部署方式更新" class="headerlink" title="云函数部署方式更新"></a>云函数部署方式更新</h4><ul>
+<li><code>Clone</code> 仓库最新代码到本地<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/qkqpttgf/OneManager-php.git</span><br></pre></td></tr></table></figure></li>
+<li>点击左侧 <code>函数管理</code> 页面上方的 <code>函数代码</code></li>
+<li>在 <code>提交方法</code> 处选择 <code>本地上传 zip 包</code> </li>
+<li>点击上传选择刚 Clone 到本地的 zip 包并点击 <code>部署</code><div class="img-wrap"><div class="img-bg"><img class="img lazyload placeholder" src="https://img.imsyy.top/post/17770/23.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/23.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div></div></li>
+</ul>
+<h4 id="Heroku-部署方式更新"><a href="#Heroku-部署方式更新" class="headerlink" title="Heroku 部署方式更新"></a>Heroku 部署方式更新</h4><div class="note warning"><p>该部署方式已不推荐使用</p></div>
+<p><code>Heroku</code> 将会从代码仓库自动拉取最新代码并部署</p>
+<h2 id="其他方面"><a href="#其他方面" class="headerlink" title="其他方面"></a>其他方面</h2><h3 id="自定义域名"><a href="#自定义域名" class="headerlink" title="自定义域名"></a>自定义域名</h3><h4 id="腾讯云-SCF-部署方式"><a href="#腾讯云-SCF-部署方式" class="headerlink" title="腾讯云 SCF 部署方式"></a>腾讯云 SCF 部署方式</h4><ul>
+<li>登陆你的域名管理面板，添加 <code>cname</code> 解析，地址为你刚刚创建的 <code>SCF 的外链地址</code></li>
+<li>在 <code>SCF 控制台</code> 左侧点击 <code>触发管理</code></li>
+<li>点击 <code>API 服务名</code> 右侧的链接跳转到 <code>API 网关</code></li>
+<li>在 <code>通用 API 列表</code> 的右侧点击 <code>编辑</code></li>
+<li>在路径中改为 <code>/</code><div class="gallery stretch" col='1'>
+              <p><img src="https://img.imsyy.top/post/17770/24.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/24.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg" alt="更改路径"></p>
+            </div></li>
+<li>然后点击<code>立即完成</code> 后点击 <code>发布服务</code></li>
+<li>然后选择到 <code>自定义域名</code> 后点击 <code>新建</code></li>
+<li>在 <code>域名</code> 处填写你刚添加的域名，若有证书也可开启 HTTPS 访问<div class="gallery stretch" col='1'>
+              <p><img src="https://img.imsyy.top/post/17770/25.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/25.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg" alt="开启 HTTPS 访问"></p>
+            </div></li>
+</ul>
+<h4 id="Heroku-部署方式"><a href="#Heroku-部署方式" class="headerlink" title="Heroku 部署方式"></a>Heroku 部署方式</h4><p><code>Heroku</code> 的自定义域名需要借助 <code>CloudFlare Workers</code> 来实现，有点麻烦，实在想自定义域名的朋友们可参考下面这篇文章</p>
+<div class="tag link"><a class="link-card" title="CloudFlare Workers 设置使用自己的域名" target="_blank" rel="noopener" href="https://vircloud.net/exp/cf-worker-domain.html"><div class="left"><img src="https://vircloud.net/usr/themes/armx/img/favicon.ico" class="lazyload placeholder" data-srcset="https://vircloud.net/usr/themes/armx/img/favicon.ico" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"/></div><div class="right"><p class="text">CloudFlare Workers 设置使用自己的域名</p><p class="url">https://vircloud.net/exp/cf-worker-domain.html</p></div></a></div>
+
+<h3 id="程序美化"><a href="#程序美化" class="headerlink" title="程序美化"></a>程序美化</h3><p>程序默认主题的界面实在是不太美观，这里建议点击右下角来选择你认为合适的主题<br>我选择的是 <code>renexmoe</code> 主题，并对这个主题做出了一些修改。若你也想自定义主题或开发一套新主题，则需要前文提到的 <code>Fork</code> 该仓库，并将 <code>Heroku</code> 部署源改为你的仓库</p>
+<div class="gallery stretch" col='1'>
+              <p><img src="https://img.imsyy.top/post/17770/18.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/18.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg" alt="将 Heroku 连接至 GitHub"></p>
+            </div>
+<p>当修改完成并推送至 <code>GitHub</code> 后即可点击 <code>Deploy Branch</code> 按钮更新程序部署</p>
+<div class="gallery stretch" col='1'>
+              <p><img src="https://img.imsyy.top/post/17770/19.png" class="lazyload placeholder" data-srcset="https://img.imsyy.top/post/17770/19.png" srcset="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@3/img/placeholder/c617bfd2497fcea598e621413e315c368f8d8e.svg"></p>
+            </div>
+  
+  
+    
+    <div class='footer'>
+      
+      
+      
+        <div class='copyright'>
+          <blockquote>
+            
+              
+                <p><strong><i class="fad fa-copyright"></i> 版权声明</strong><p>本博客所有文章除特别声明外，均采用 <a href="/copyright/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！</p></p>
+
+              
+            
+              
+                <p>本文的永久链接为：<a href=https://blog.imsyy.top/posts/17770/>https://blog.imsyy.top/posts/17770/</a></p>
+              
+            
+          </blockquote>
+        </div>
+      
+      
+    </div>
+  
+  
+    
+
+
+  <div class='article-meta' id="bottom">
+    <div class='new-meta-box'>
+      
+        
+          <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fad fa-calendar-alt fa-fw" aria-hidden="true"></i>
+    <p>发布于：2021年2月24日</p>
+  </a>
+</div>
+
+        
+      
+        
+          
+  
+  <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E6%95%99%E7%A8%8B/" rel="nofollow"><i class="fad fa-hashtag fa-fw" aria-hidden="true"></i><p>教程</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E7%BD%91%E7%9B%98/" rel="nofollow"><i class="fad fa-hashtag fa-fw" aria-hidden="true"></i><p>网盘</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/OneDrive/" rel="nofollow"><i class="fad fa-hashtag fa-fw" aria-hidden="true"></i><p>OneDrive</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/OneManager/" rel="nofollow"><i class="fad fa-hashtag fa-fw" aria-hidden="true"></i><p>OneManager</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Cloudflare/" rel="nofollow"><i class="fad fa-hashtag fa-fw" aria-hidden="true"></i><p>Cloudflare</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/Heroku/" rel="nofollow"><i class="fad fa-hashtag fa-fw" aria-hidden="true"></i><p>Heroku</p></a></div> <div class="new-meta-item meta-tags"><a class="tag" href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91%E7%9B%98/" rel="nofollow"><i class="fad fa-hashtag fa-fw" aria-hidden="true"></i><p>阿里云盘</p></a></div>
+
+
+        
+      
+    </div>
+  </div>
+
+
+  
+  
+
+  
+    <div class="prev-next">
+      
+        <a class='prev' href='/posts/16316/'>
+          <p class='title'><i class="fas fa-chevron-left" aria-hidden="true"></i>Flex 布局教程 - 语法详解</p>
+          <!--<p class='content'>本文介绍了 Flex 布局的语法部分，常见布局的 Flex 写法请查看 这里本文转载自 阮一峰的网络日志 ，并且在原文基础上作出了一些修改
+
+由于平时也经常用到 Flex 布局，同时也经常看这篇...</p>-->
+          <p class='content'>Flex 布局已成为网页布局的首选方案。本文介绍它的语法，下一篇文章给出常见布局的 Flex 写法</p>
+        </a>
+      
+      
+        <a class='next' href='/posts/43167/'>
+          <p class='title'>使用 Git 方式上传文件至代码仓库<i class="fas fa-chevron-right" aria-hidden="true"></i></p>
+          <!--<p class='content'>为了演示方便，以下操作均使用 Github ，其他仓库操作过程大同小异
+说明无论是部署 Hexo 还是从本地推送至代码仓库，我们都会用到 Git 命令来进行上传操作，下面就来讲讲如何使用 Git...</p>-->
+          <p class='content'>无论是部署 Hexo 还是推送代码，我们都会用到 Git 上传操作，这里就来讲解下怎么使用</p>
+        </a>
+      
+    </div>
+  
+</article>
+
+
+  
+
+  <article class="post white-box reveal shadow floatable" id="comments">
+    <p ct><i class="fa-duotone fa-comment-lines"></i> <b><font style="font-size:18px">评论区</font></b> <font  style="font-size:15px" color="#BEBEBE">  请大家友善讨论哦</font></p>
+    
+    <div id="twikoo_container">
+  <i class="fas fa-cog fa-spin fa-fw fa-2x"></i>
+</div>
+
+  </article>
+
+
+
+
+
+
+</div>
+<aside class='l_side'>
+  
+  
+    
+    
+
+
+
+  <section class="widget toc-wrapper shadow floatable desktop mobile" id="toc-div" >
+    
+  <header>
+    
+      <i class="fad fa-list fa-fw" aria-hidden="true"></i><span class='name'>本文目录</span>
+    
+  </header>
+
+
+    <div class='content'>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E7%95%8C%E9%9D%A2"><span class="toc-text">程序界面</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E6%9C%9F%E5%87%86%E5%A4%87"><span class="toc-text">前期准备</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%86%E5%A4%87%E7%BD%91%E7%9B%98"><span class="toc-text">准备网盘</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%98%BF%E9%87%8C%E4%BA%91%E7%9B%98"><span class="toc-text">阿里云盘</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#OneDrive"><span class="toc-text">OneDrive</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C%E4%BA%91%E6%9C%8D%E5%8A%A1%E5%95%86%E8%B4%A6%E5%8F%B7"><span class="toc-text">注册云服务商账号</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2"><span class="toc-text">服务部署</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%85%BE%E8%AE%AF%E4%BA%91-SCF-%E4%BA%91%E5%87%BD%E6%95%B0"><span class="toc-text">腾讯云 SCF 云函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Heroku-Cloudflare"><span class="toc-text">Heroku + Cloudflare</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Heroku-%E7%AB%AF%E9%83%A8%E7%BD%B2"><span class="toc-text">Heroku 端部署</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Cloudflare-%E7%AB%AF%E9%83%A8%E7%BD%B2"><span class="toc-text">Cloudflare 端部署</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E9%85%8D%E7%BD%AE"><span class="toc-text">程序配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0"><span class="toc-text">更新</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%91%E5%87%BD%E6%95%B0%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F%E6%9B%B4%E6%96%B0"><span class="toc-text">云函数部署方式更新</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Heroku-%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F%E6%9B%B4%E6%96%B0"><span class="toc-text">Heroku 部署方式更新</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%96%B9%E9%9D%A2"><span class="toc-text">其他方面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D"><span class="toc-text">自定义域名</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%85%BE%E8%AE%AF%E4%BA%91-SCF-%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F"><span class="toc-text">腾讯云 SCF 部署方式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Heroku-%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F"><span class="toc-text">Heroku 部署方式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%E7%BE%8E%E5%8C%96"><span class="toc-text">程序美化</span></a></li></ol></li></ol>
+    </div>
+  </section>
+
+
+  
+
+
+</aside>
+
+
+
+        
+        <!--此文件用来存放一些不方便取值的变量-->
+<!--思路大概是将值藏到重加载的区域内-->
+
+<script>
+  window.pdata={}
+  pdata.ispage=true;
+  pdata.postTitle="使用 OneManager-php 搭建一个免费的文件分享站";
+  pdata.commentPath="";
+  pdata.commentPlaceholder="";
+  // header 这里无论是否开启pjax都需要
+  var l_header=document.getElementById("l_header");
+  
+  l_header.classList.add("show");
+  
+  
+    // cover
+    var cover_wrapper=document.querySelector('.cover-wrapper');
+    
+    cover_wrapper.id="none";
+    cover_wrapper.style.display="none";
+    
+  
+</script>
+
+      </div>
+      
+  
+  <footer class="footer clearfix">
+    <br><br>
+    
+      
+        <br>
+        <div class="social-wrapper">
+          
+            
+              <a href="/atom.xml"
+                class="social fad fa-rss flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+                
+              </a>
+            
+          
+            
+              <a href="mailto:one@imsyy.top"
+                class="social fad fa-envelope-open-text flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+                
+              </a>
+            
+          
+            
+              <a href="https://github.com/imsyy/"
+                class="social fad fa-code-branch flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+                
+              </a>
+            
+          
+            
+              <a href="https://music.imsyy.top/"
+                class="social fad fa-headphones-alt flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+                
+              </a>
+            
+          
+            
+              <a href="https://www.imsyy.top/"
+                class="social fad fa-house flat-btn"
+                target="_blank"
+                rel="external nofollow noopener noreferrer">
+                
+              </a>
+            
+          
+        </div>
+      
+    
+      
+        <div><p><span class="copyright">博客内容遵循 「 <a href="/copyright/">署名-非商业性使用-相同方式共享 4.0 国际 ( CC BY-NC-SA 4.0 )</a> 」 协议</span></p>
+</div>
+      
+    
+      
+        
+          <div><p><span class="cdn">CDN BY <a target="_blank" rel="noopener" href="https://www.upyun.com/"><b>又拍云</b></a> &amp;&amp; <a target="_blank" rel="noopener" href="https://www.jsdelivr.com/"><b>jsDelivr</b></a> | HOST BY <a target="_blank" rel="noopener" href="https://vercel.com/"><b>Vercel</b></a> &amp;&amp; <a target="_blank" rel="noopener" href="https://github.com/"><b>Github</b></a> &amp;&amp; <a target="_blank" rel="noopener" href="https://gitee.com/"><b>Gitee</b></a></span></p>
+</div>
+        
+      
+    
+      
+        
+          <div><p><span class="cdn-mobile">CDN BY <a target="_blank" rel="noopener" href="https://www.upyun.com/"><b>又拍云</b></a> &amp;&amp; <a target="_blank" rel="noopener" href="https://www.jsdelivr.com/"><b>jsDelivr</b></a> | HOST BY <a target="_blank" rel="noopener" href="https://vercel.com/"><b>Vercel</b></a> &amp;&amp; <a target="_blank" rel="noopener" href="https://github.com/"><b>Github</b></a></span></p>
+</div>
+        
+      
+    
+      
+        
+          <div><p>本站由 <a target="_blank" rel="noopener" href="https://www.upyun.com/?utm_source=lianmeng&utm_medium=referral"><svg id="up" t="1624174698727" class="icon" viewBox="0 0 4442 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2707" width="200" height="200"><path d="M1258.61548453-45.82215132c-22.90178928-22.90178928-52.34694652-39.26021062-81.79210521-52.34694651-22.90178928-13.08673737-49.07526254-6.54336796-62.16199844 13.0867359L937.99043601 150.47889885l-13.08673737 16.35842135c-19.63010531 26.17347327-49.07526254 39.26021062-81.79210375 39.26020915h-32.71684267c-91.60715713 3.27168397-179.94262883 49.07526254-235.56125933 124.32399983-45.80357857 58.89031445-65.43368387 134.13905173-65.43368387 206.11610208 0 13.08673737 9.81505191 26.17347327 22.90178927 29.44515724 26.17347327 13.08673737 42.5318946 35.98852518 45.80357858 65.43368389 9.81505191 42.5318946-19.63010531 85.06378772-62.16199992 94.87884112-45.80357857 13.08673737-91.60715713-13.08673737-104.69389303-55.61863049v-3.27168544c-6.54336796-26.17347327 0-49.07526254 16.35842134-68.70536641 9.81505191-9.81505191 13.08673737-26.17347327 13.08673588-39.2602106-6.54336796-94.87884111 19.63010531-193.02936621 78.52041977-268.27810202 71.97705183-94.87884111 183.21431429-153.76915557 304.26662868-153.76915558 22.90178928 0 42.5318946-13.08673737 55.61863049-29.44515871l163.58420897-215.93115401c9.81505191-13.08673737 6.54336796-32.71684119-6.54336794-42.5318946-3.27168397-3.27168397-6.54336796-3.27168397-9.81505341-6.54336942-274.82146994-81.79210375-579.08809861 16.35842133-755.75904346 251.91968214-238.83294478 310.80999662-179.94262883 755.75904348 130.86736775 994.59198826 29.44515724 19.63010531 62.16199991 42.5318946 91.60715569 62.16199844 19.63010531 9.81505191 45.80357857 6.54336796 62.16199991-13.0867359l176.67094484-238.83294478 13.08673738-16.35842133c19.63010531-26.17347327 49.07526254-39.26021062 81.79210375-39.26020915h35.98852517c91.60715713-3.27168397 179.94262883-49.07526254 232.28957684-124.32399836 45.80357857-58.89031445 68.70536787-134.13905173 65.43368388-206.11610357 0-13.08673737-9.81505191-26.17347327-19.6301053-29.44515721-26.17347327-13.08673737-45.80357857-35.98852518-45.80357858-65.43368391-9.81505191-42.5318946 16.35842133-85.06378772 62.16199991-94.87884111 45.80357857-13.08673737 91.60715713 13.08673737 104.69389305 55.61863196 3.27168397 26.17347327 0 49.07526254-19.63010533 68.70536639-9.81505191 9.81505191-13.08673737 26.17347327-13.0867359 39.26021064 9.81505191 94.87884111-19.63010531 189.75768224-75.24873727 268.27810199-71.97705183 94.87884111-183.21431429 153.76915557-304.26662718 153.7691556-22.90178928 0-42.5318946 13.08673737-55.61863049 29.44515868l-163.58420898 215.93115403c-9.81505191 13.08673737-6.54336796 32.71684119 6.54336795 42.53189458 3.27168397 3.27168397 6.54336796 3.27168397 9.81505339 6.54336797 284.63652335 85.06378772 588.90315054-16.35842133 765.5740954-255.19136465 219.20283948-314.08168058 157.04083955-755.75904348-153.76915559-994.59198826z m1171.26293314 193.02936622v-16.35842135c0-9.81505191-6.54336796-19.63010531-19.63010533-22.90178929H1850.79031903c-9.81505191 0-19.63010531 6.54336796-22.90178926 19.63010532v35.98852665c0 9.81505191 6.54336796 19.63010531 19.63010531 22.90178928h471.12252011c9.81505191 0 19.63010531 6.54336796 22.90178929 19.63010384v6.54336941c-26.17347327 150.49747162-88.33547317 291.1798913-186.48599678 408.96052171-3.27168397 9.81505191-16.35842133 9.81505191-26.17347325 0l-3.27168544-3.27168545c-75.2487358-98.1505251-127.59568233-209.38778755-153.7691556-330.44010044 0-13.08673737-13.08673737-16.35842133-26.17347325-16.35842136h-32.7168412c-13.08673737 0-22.90178928 13.08673737-19.63010532 26.17347327 29.44515724 137.41073571 88.33547317 268.27810202 176.67094488 379.51536445 9.81505191 9.81505191 9.81505191 22.90178928 0 29.44515724-94.87884111 91.60715713-212.65947151 157.04083955-343.52683781 179.94262885-13.08673737 0-16.35842133 13.08673737-16.35842136 22.9017893v32.71684266c0 13.08673737 13.08673737 22.90178928 26.17347326 22.90178929 147.22578764-26.17347327 284.63652335-94.87884111 392.60210184-202.8444196 6.54336796-9.81505191 19.63010531-9.81505191 29.44515723 0 94.87884111 91.60715713 209.38778755 160.312525 333.71178442 199.57273415 9.81505191 3.27168397 19.63010531 0 26.17347472-9.8150519v-3.27168399l9.81505192-32.7168412c3.27168397-9.81505191-3.27168397-22.90178928-13.08673735-26.17347325-114.50894643-35.98852518-219.20283948-98.1505251-304.26662719-179.94263031-9.81505191-9.81505191-9.81505191-22.90178928 0-29.44515725 127.59568233-153.76915557 206.1161021-336.98346986 219.20283947-533.28452003z m379.51536446-75.24873583h-32.71684268c-9.81505191 0-19.63010531 6.54336796-22.90178929 19.63010532v121.05231437c0 9.81505191-6.54336796 19.63010531-19.63010531 22.90178929h-81.79210375c-9.81505191 0-19.63010531 6.54336796-19.63010531 19.63010385v39.26021062c0 13.08673737 6.54336796 19.63010531 19.63010531 22.9017893h78.52041978c9.81505191 0 19.63010531 6.54336796 19.63010531 19.6301053v170.12757692c0 9.81505191-6.54336796 19.63010531-19.63010531 22.9017893h-81.79210376c-9.81505191 0-19.63010531 6.54336796-19.63010531 19.6301053v42.53189311c0 13.08673737 6.54336796 19.63010531 19.63010531 22.90178929h78.52041978c9.81505191 0 19.63010531 6.54336796 19.63010531 19.63010531v166.85589296c0 35.98852518-13.08673737 94.87884111-104.69389303 98.15052508-9.81505191 0-19.63010531 6.54336796-19.6301053 19.63010531v35.98852517c0 13.08673737 13.08673737 22.90178928 26.17347324 22.9017893 88.33547317-9.81505191 179.94262883-55.6186305 179.94262886-176.67094486v-163.58420898c0-9.81505191 6.54336796-19.63010531 19.6301053-19.63010531h71.97705184c13.08673737 0 19.63010531-9.81505191 19.6301053-19.63010385v-35.98852664c0-9.81505191-6.54336796-19.63010531-19.6301053-19.63010531h-65.43368391c-9.81505191 0-19.63010531-6.54336796-19.63010381-19.63010532V346.77994906c0-9.81505191 6.54336796-19.63010531 19.63010381-19.63010533h71.97705183c9.81505191 0 19.63010531-6.54336796 19.63010532-19.63010384v-35.98852667c0-9.81505191-6.54336796-19.63010531-19.63010532-22.90178926H2855.19735921c-9.81505191 0-19.63010531-6.54336796-19.63010381-19.63010533v-121.05231437c-3.27168397-26.17347327-13.08673737-35.98852518-26.17347327-35.98852519z m179.94262883 870.26798992c0 9.81505191 6.54336796 19.63010531 19.63010531 22.90178929h251.91968067c107.96557701 3.27168397 196.30105018-81.79210375 199.57273416-189.75768224v-523.46946813c0-9.81505191-6.54336796-19.63010531-19.63010532-19.63010381h-428.59062553c-9.81505191 0-19.63010531 6.54336796-19.63010531 19.63010381v3.27168399l-3.27168398 687.05367709z m268.27810201-55.61863196H3084.21525207c-13.08673737 0-19.63010531-6.54336796-22.90178927-19.63010385v-238.83294476c0-13.08673737 9.81505191-19.63010531 19.63010531-19.63010532h274.82146996c9.81505191 0 19.63010531 6.54336796 22.90178927 19.63010532v150.49747159c0 62.16199991-55.6186305 111.23726246-121.05231437 107.96557702 3.27168397 0 0 0 0 0z m121.05231437-559.4579933V510.36415802c0 9.81505191-6.54336796 19.63010531-19.6301053 22.90178928H3084.21525207c-13.08673737 0-19.63010531-6.54336796-22.90178927-19.63010532v-183.2143128c0-13.08673737 6.54336796-19.63010531 19.63010531-22.90178929h274.82146996c13.08673737-3.27168397 22.90178928 6.54336796 22.90178927 19.63010384 0-3.27168397 0 0 0 0z m-52.34694653-255.19136466h-219.20283944c-9.81505191 0-19.63010531 6.54336796-19.63010531 19.63010532v39.26020916c0 9.81505191 6.54336796 19.63010531 19.63010531 19.6301053h222.47452343c9.81505191 0 19.63010531-9.81505191 19.63010532-19.6301053v-35.98852518c0-9.81505191-9.81505191-19.63010531-22.90178931-22.9017893 3.27168397 0 0 0 0 0z m840.82283123 35.98852519h-454.7640988c-9.81505191 0-19.63010531 6.54336796-22.90178929 16.35842135v39.26021062c0 9.81505191 6.54336796 19.63010531 19.63010383 22.90178928h458.03578426c9.81505191 0 19.63010531-6.54336796 19.6301053-19.63010531v-35.98852665c3.27168397-9.81505191-3.27168397-19.63010531-13.0867359-22.90178929h-6.5433694z m-193.02936622 392.60210184h317.35336456c9.81505191 0 19.63010531-6.54336796 19.63010531-19.63010532V444.93047413c0-9.81505191-6.54336796-19.63010531-19.63010531-19.6301053h-706.68378093c-9.81505191 0-19.63010531 6.54336796-19.63010385 19.6301053v35.98852665c0 9.81505191 6.54336796 19.63010531 19.63010385 19.63010532h222.4745249c13.08673737 0 22.90178928 9.81505191 22.9017878 19.63010383 0 6.54336796 0 9.81505191-6.54336793 16.35842133l-147.22578764 261.73473406c-3.27168397 3.27168397-6.54336796 9.81505191-9.81505192 16.35841987-13.08673737 35.98852518-6.54336796 75.2487358 16.35841988 104.69389451 22.90178928 35.98852518 62.16199991 55.6186305 104.6938945 52.34694653h395.87378433c16.35842133 0 35.98852518-9.81505191 42.53189459-26.17347327 6.54336796-16.35842133 9.81505191-32.71684119 3.27168398-45.80357857l-91.60715714-186.48599826c-3.27168397-9.81505191-13.08673737-16.35842133-22.9017893-13.08673588-3.27168397 0-6.54336796 3.27168397-6.54336793 3.27168396l-29.44515725 16.35842134c-9.81505191 3.27168397-16.35842133 13.08673737-13.08673735 22.90178782 0 3.27168397 3.27168397 6.54336796 3.27168398 9.81505341l55.61863197 104.69389302c9.81505191 13.08673737-3.27168397 29.44515724-22.90178931 29.44515723h-317.35336454c-16.35842133 0-29.44515724-6.54336796-39.26021063-16.35841987-6.54336796-9.81505191-6.54336796-19.63010531-3.27168397-29.44515725 0-3.27168397 0-3.27168397 3.27168397-3.27168542l176.67094487-307.53831115c13.08673737-19.63010531 32.71684119-29.44515724 52.34694651-29.44515724z" fill="#666666" p-id="2708"></path></svg></a> 提供 <b>CDN加速 / 云储存服务</b></p>
+</div>
+        
+      
+    
+      
+        <div class='copyright'>
+        <p>Copyright © 2020 - <script>document.write((new Date()).getFullYear())</script>&nbsp;<a target="_blank" rel="noopener" href="https://imsyy.top/">無名</a> | <a target="_blank" rel="noopener" href="https://beian.miit.gov.cn/">豫ICP备2022018134号-1</a><br>本站使用 <a target="_blank" rel="noopener" href="https://github.com/volantis-x/hexo-theme-volantis/"><b>Volantis</b></a> 作为主题 | 由 <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/"><b>Hexo</b></a> 强力驱动</p>
+
+        </div>
+      
+    
+      
+        
+          <div><p><span id="lc-sv">访问量为 <span id='number'><i class="fa-duotone fa-spinner-third fa-fw" aria-hidden="true"></i></span> 次</span> <span id="lc-uv">| 访客数为 <span id='number'><i class="fad fa-circle-notch fa-spin fa-fw" aria-hidden="true"></i></span> 人</span></p>
+</div>
+        
+      
+    
+      
+        
+          <div><p><i class="fad fa-blog"></i>&nbsp;無名小栈</p>
+</div>
+        
+      
+    
+  </footer>
+
+
+      <a id="s-top" class="fas fa-arrow-up fa-fw" href="javascript:void(0)"></a>
+    </div>
+  </div>
+  <div>
+    <script>
+/************这个文件存放不需要重载的全局变量和全局函数*********/
+window.volantis={};
+window.volantis.loadcss=document.getElementById("loadcss");
+/******************** Pjax ********************************/
+function VPjax(){
+	this.list=[] // 存放回调函数
+	this.start=()=>{
+	  for(var i=0;i<this.list.length;i++){
+		this.list[i].run();
+	  }
+	}
+	this.push=(fn,name)=>{
+		var f=new PjaxItem(fn,name);
+		this.list.push(f);
+	}
+	// 构造一个可以run的对象
+	function PjaxItem(fn,name){
+		// 函数名称
+		this.name = name || fn.name
+		// run方法
+		this.run=()=>{
+			fn()
+		}
+	}
+}
+volantis.pjax={}
+volantis.pjax.method={
+	complete: new VPjax(),
+	error: new VPjax(),
+	send: new VPjax()
+}
+volantis.pjax={
+	...volantis.pjax,
+	push: volantis.pjax.method.complete.push,
+	error: volantis.pjax.method.error.push,
+	send: volantis.pjax.method.send.push
+}
+/********************脚本懒加载函数********************************/
+// 已经加入了setTimeout
+function loadScript(src, cb) {
+	setTimeout(function() {
+		var HEAD = document.getElementsByTagName('head')[0] || document.documentElement;
+		var script = document.createElement('script');
+		script.setAttribute('type','text/javascript');
+		if (cb) script.onload = cb;
+		script.setAttribute('src', src);
+		HEAD.appendChild(script);
+	});
+}
+//https://github.com/filamentgroup/loadCSS
+var loadCSS = function( href, before, media, attributes ){
+	var doc = window.document;
+	var ss = doc.createElement( "link" );
+	var ref;
+	if( before ){
+		ref = before;
+	}
+	else {
+		var refs = ( doc.body || doc.getElementsByTagName( "head" )[ 0 ] ).childNodes;
+		ref = refs[ refs.length - 1];
+	}
+	var sheets = doc.styleSheets;
+	if( attributes ){
+		for( var attributeName in attributes ){
+			if( attributes.hasOwnProperty( attributeName ) ){
+				ss.setAttribute( attributeName, attributes[attributeName] );
+			}
+		}
+	}
+	ss.rel = "stylesheet";
+	ss.href = href;
+	ss.media = "only x";
+	function ready( cb ){
+		if( doc.body ){
+			return cb();
+		}
+		setTimeout(function(){
+			ready( cb );
+		});
+	}
+	ready( function(){
+		ref.parentNode.insertBefore( ss, ( before ? ref : ref.nextSibling ) );
+	});
+	var onloadcssdefined = function( cb ){
+		var resolvedHref = ss.href;
+		var i = sheets.length;
+		while( i-- ){
+			if( sheets[ i ].href === resolvedHref ){
+				return cb();
+			}
+		}
+		setTimeout(function() {
+			onloadcssdefined( cb );
+		});
+	};
+	function loadCB(){
+		if( ss.addEventListener ){
+			ss.removeEventListener( "load", loadCB );
+		}
+		ss.media = media || "all";
+	}
+	if( ss.addEventListener ){
+		ss.addEventListener( "load", loadCB);
+	}
+	ss.onloadcssdefined = onloadcssdefined;
+	onloadcssdefined( loadCB );
+	return ss;
+};
+</script>
+
+<script>
+  
+  loadCSS("https://fastly.jsdelivr.net/gh/volantis-x/cdn-fontawesome-pro@master/css/all.min.css", window.volantis.loadcss);
+  
+  
+  
+  
+</script>
+<!-- required -->
+
+<script src="https://npm.elemecdn.com/jquery@3.5/dist/jquery.min.js"></script>
+
+<script>
+  function pjax_fancybox() {
+    $(".md .gallery").find("img").each(function () { //渲染 fancybox
+      var element = document.createElement("a"); // a 标签
+      $(element).attr("class", "fancybox");
+      $(element).attr("pjax-fancybox", "");  // 过滤 pjax
+      $(element).attr("href", $(this).attr("src"));
+      if ($(this).attr("data-original")) {
+        $(element).attr("href", $(this).attr("data-original"));
+      }
+      $(element).attr("data-fancybox", "images");
+      var caption = "";   // 描述信息
+      if ($(this).attr('alt')) {  // 判断当前页面是否存在描述信息
+        $(element).attr('data-caption', $(this).attr('alt'));
+        caption = $(this).attr('alt');
+      }
+      var div = document.createElement("div");
+      $(div).addClass("fancybox");
+      $(this).wrap(div); // 最外层套 div ，其实主要作用还是 class 样式
+      var span = document.createElement("span");
+      $(span).addClass("image-caption");
+      $(span).text(caption); // 加描述
+      $(this).after(span);  // 再套一层描述
+      $(this).wrap(element);  // 最后套 a 标签
+    })
+    $(".md .gallery").find("img").fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+      closeClick: true,
+      helpers: {
+        overlay: {closeClick: true}
+      },
+      buttons: [
+        "zoom",
+        "close"
+      ]
+    });
+  };
+  function SCload_fancybox() {
+    if ($(".md .gallery").find("img").length == 0) return;
+    loadCSS("https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css", document.getElementById("loadcss"));
+    loadScript('https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js', pjax_fancybox)
+  };
+  $(function () {
+    SCload_fancybox();
+  });
+  function Pjax_SCload_fancybox(){
+	if (typeof $.fancybox == "undefined") {
+	 SCload_fancybox();
+    } else {
+	 pjax_fancybox();
+    }
+  }
+  volantis.pjax.push(Pjax_SCload_fancybox)
+  volantis.pjax.send(()=>{
+      if (typeof $.fancybox != "undefined") {
+        $.fancybox.close();    // 关闭弹窗
+      }
+  },'fancybox')
+</script>
+
+
+<!-- internal -->
+
+
+
+  
+  
+
+  <div id="rightmenu-wrapper">
+    <ul class="list-v rightmenu" id="rightmenu-content">
+      <li class='option'>
+        <a class='vlts-menu opt fix-cursor-default' id='menu-copy-text' onclick="document.execCommand('copy')"><i class='fa fa-copy fa-fw'></i>复制文本</a>
+        <hr id='hr-text'>
+        <a class='vlts-menu opt fix-cursor-default' id='menu-copy-href'><i class='fa fa-link fa-fw'></i>复制链接</a>
+        <a class='vlts-menu opt fix-cursor-default' id='menu-open-href'><i class='fa fa-external-link-square-alt fa-fw'></i>在新标签页打开</a>
+        <hr id='hr-href'>
+        <a class='vlts-menu opt fix-cursor-default' id='menu-copy-src'><i class='fa fa-image fa-fw'></i>复制图片地址</a>
+        <hr id='hr-src'>
+      </li>
+      
+        <li class='navigation'>
+          <a class='nav icon-only fix-cursor-default' onclick='history.back()'><i class='fa fa-arrow-left fa-fw'></i></a>
+          <a class='nav icon-only fix-cursor-default' onclick='history.forward()'><i class='fa fa-arrow-right fa-fw'></i></a>
+          <a class='nav icon-only fix-cursor-default' onclick='window.location.reload()'><i class='fa fa-redo fa-fw'></i></a>
+          <a class='nav icon-only fix-cursor-default' href='/'><i class='fa fa-home fa-fw'></i></a>
+        </li>
+      
+      <hr>
+      
+        
+          
+    <li>
+      <a class='vlts-menu fix-cursor-default ' href=/friends/
+        
+        
+        
+        
+          id="friends"
+        >
+        <i class='fad fa-users fa-fw'></i> 小伙伴们
+      </a>
+    </li>
+  
+        
+      
+        
+          
+    <li>
+      <a class='vlts-menu fix-cursor-default ' href=/archive/
+        
+        
+        
+        
+          id="archive"
+        >
+        <i class='fad fa-archive fa-fw'></i> 文章归档
+      </a>
+    </li>
+  
+        
+      
+        
+          
+    <li>
+      <a class='vlts-menu fix-cursor-default ' href=/messages/
+        
+        
+        
+        
+          id="messages"
+        >
+        <i class='fad fa-comment-alt-lines fa-fw'></i> 站内留言
+      </a>
+    </li>
+  
+        
+      
+        
+          
+    <li>
+      <a class='vlts-menu fix-cursor-default ' href=/about/
+        
+        
+        
+        
+          id="about"
+        >
+        <i class='fad fa-smile-wink fa-fw'></i> 关于本站
+      </a>
+    </li>
+  
+        
+      
+        
+          <hr>
+        
+      
+        
+          
+    <li>
+      <a class='vlts-menu fix-cursor-default toggle-mode-btn' 
+        
+        
+        
+        >
+        <i class='fad fa-adjust fa-fw'></i> 明暗切换
+      </a>
+    </li>
+  
+        
+      
+        
+          <hr>
+        
+      
+        
+          <li class='music name'>
+            <p class='nav music-title fix-cursor-default'></p>
+          </li>
+          <li class='music ctrl'>
+            <a class='nav icon-only backward fix-cursor-default' onclick='aplayerBackward()'><i class='fa fa-step-backward fa-fw'></i></a>
+            <a class='nav icon-only toggle fix-cursor-default' onclick='aplayerToggle()'><i class='fa fa-play fa-fw'></i></a>
+            <a class='nav icon-only forward fix-cursor-default' onclick='aplayerForward()'><i class='fa fa-step-forward fa-fw'></i></a>
+          </li>
+          <li class='music volume'>
+            <a class='nav volume'>
+              <div class="aplayer-volume-bar-wrap">
+                <div class="aplayer-volume-bar fix-cursor-pointer">
+                  <div class="aplayer-volume"></div>
+                  <i class='left fa fa-volume-off fa-fw'></i>
+                  <i class='right fa fa-volume-up fa-fw'></i>
+                </div>
+              </div>
+            </a>
+          </li>
+        
+      
+    </ul>
+  </div>
+
+  <script>
+    window.document.oncontextmenu = function (event) {
+      if (event.ctrlKey) return true;
+      if (/Android|webOS|BlackBerry/i.test(navigator.userAgent)) return true;
+      return popMenu(event);
+    };
+    document.addEventListener("click", function (event) {
+      var mymenu = document.getElementById('rightmenu-wrapper');
+      mymenu.style.display = "none";
+    });
+    function popMenu(event) {
+      var mymenu = document.getElementById('rightmenu-wrapper');
+      var menuContent = document.getElementById('rightmenu-content');
+      var screenWidth = document.documentElement.clientWidth || document.body.clientWidth;
+      var screenHeight = document.documentElement.clientHeight || document.body.clientHeight;
+      mymenu.style.left = event.clientX + "px"; // 获取鼠标位置
+      mymenu.style.top = event.clientY + "px";
+      mymenu.style.display = 'block';
+      if (event.clientX * 2 > screenWidth) {
+        menuContent.classList.add('left');
+      } else {
+        menuContent.classList.remove('left');
+      }
+      if (event.clientY * 2 > screenHeight) {
+        menuContent.classList.add('top');
+      } else {
+        menuContent.classList.remove('top');
+      }
+
+      let hrText = document.getElementById('hr-text');
+      let hrSrc = document.getElementById('hr-src');
+      let hrHref = document.getElementById('hr-href');
+
+      // 选中图片
+      let copySrc = document.getElementById('menu-copy-src');
+      if (copySrc != undefined) {
+        if (event.target.currentSrc) {
+          copySrc.style.display = 'block';
+          copySrc.addEventListener("click", function (e) {
+            copyString(event.target.currentSrc);
+          },{once: true});
+          hrSrc.style.display = 'block';
+        } else {
+          copySrc.style.display = 'none';
+          hrSrc.style.display = 'none';
+        }
+      }
+
+      // 选中按钮
+      // 判断是不是按钮
+      let href = '';
+      if (event.path) {
+        for (i = 0; i < event.path.length; i++) {
+          if (event.path[i].href != undefined && event.path[i].href.length > 0) {
+            href = event.path[i].href;
+          }
+        }
+      }
+
+      let copyText = document.getElementById('menu-copy-text');
+      copyText.style.display = 'none';
+      hrText.style.display = 'none';
+      if (href.length == 0) {
+        // 选中文本
+        if (window.getSelection().toString()) {
+          if ('true' == 'true') {
+            copyText.style.display = 'block';
+            hrText.style.display = 'block';
+          }
+        }
+      }
+
+      // 在新标签页打开
+      let openHref = document.getElementById('menu-open-href');
+      if (openHref != undefined) {
+        if (href.length > 0) {
+          openHref.style.display = 'block';
+          openHref.addEventListener("click", function (e) {
+            window.open(href);
+          },{once: true});
+          hrHref.style.display = 'block';
+        } else {
+          openHref.style.display = 'none';
+          hrHref.style.display = 'none';
+        }
+      }
+      // 复制链接
+      let copyHref = document.getElementById('menu-copy-href');
+      if (copyHref != undefined) {
+        if (href.length > 0) {
+          copyHref.style.display = 'block';
+          copyHref.addEventListener("click", function (e) {
+            copyString(href);
+          },{once: true});
+        } else {
+          copyHref.style.display = 'none';
+        }
+      }
+      // 有音乐播放器 see: layout/_third-party/aplayer/script.ejs
+      
+      if(volantis.APlayerLoaded){ // APlayer加载完成？
+        // 如果有aplayer，初始化一下
+        checkAPlayer();
+      }
+      
+      return false; // 该行代码确保系统自带的右键菜单不会被调出
+    }
+    function hideMenu() {
+      document.getElementById('rightmenu-wrapper').style.display = 'none';
+    }
+    function copyString(str) {
+      const input = document.createElement('input');
+      input.setAttribute('readonly', 'readonly');
+      document.body.appendChild(input);
+      input.setAttribute('value', str);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+    }
+    document.execCommand('click');
+  </script>
+
+
+
+
+<script>
+  function loadIssuesJS() {
+    if ($(".md").find(".issues-api").length == 0) return;
+	
+	  loadScript('/js/issues.js');
+	
+  };
+  $(function () {
+    loadIssuesJS();
+  });
+  volantis.pjax.push(()=>{
+	if (typeof IssuesAPI == "undefined") {
+	  loadIssuesJS();
+	}
+  },"IssuesJS")
+</script>
+
+
+
+  <script defer src="https://npm.elemecdn.com/vanilla-lazyload@17.1.0/dist/lazyload.min.js"></script>
+<script>
+  // https://www.npmjs.com/package/vanilla-lazyload
+  // Set the options globally
+  // to make LazyLoad self-initialize
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 0
+  };
+  // Listen to the initialization event
+  // and get the instance of LazyLoad
+  window.addEventListener(
+    "LazyLoad::Initialized",
+    function (event) {
+      window.lazyLoadInstance = event.detail.instance;
+    },
+    false
+  );
+  document.addEventListener('DOMContentLoaded', function () {
+    lazyLoadInstance.update();
+  });
+  document.addEventListener('pjax:complete', function () {
+    lazyLoadInstance.update();
+  });
+</script>
+
+
+
+
+  
+
+<script>
+  window.FPConfig = {
+	delay: 0,
+	ignoreKeywords: [],
+	maxRPS: 5,
+	hoverDelay: 25
+  };
+</script>
+<script defer src="https://fastly.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"></script>
+
+
+
+
+
+  <script src="https://npm.elemecdn.com/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+    var clipboard = new ClipboardJS('.btn-copy', {
+        target: function (trigger) {
+            return trigger.nextElementSibling
+        }
+    });
+    function wait(callback, seconds) {
+        var timelag = null;
+        timelag = window.setTimeout(callback, seconds)
+    }
+    function pjax_initCopyCode() {
+		if($(".highlight .code pre").length+$(".article pre code").length==0)return;
+        var copyHtml = '';
+        copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+        copyHtml += '<i class="fas fa-copy"></i><span>COPY</span>';
+        copyHtml += '</button>';
+        $(".highlight .code pre").before(copyHtml);
+        $(".article pre code").before(copyHtml);
+        clipboard.off('success').on('success', function (e) {
+            let $btn = $(e.trigger);
+            $btn.addClass('copied');
+            let $icon = $($btn.find('i'));
+            $icon.removeClass('fa-copy');
+            $icon.addClass('fa-check-circle');
+            let $span = $($btn.find('span'));
+            $span[0].innerText = 'COPIED';
+            wait(function () {
+                $icon.removeClass('fa-check-circle');
+                $icon.addClass('fa-copy');
+                $span[0].innerText = 'COPY'
+            }, 2000)
+        });
+        clipboard.off('error').on('error', function (e) {
+            e.clearSelection();
+            let $btn = $(e.trigger);
+            $btn.addClass('copy-failed');
+            let $icon = $($btn.find('i'));
+            $icon.removeClass('fa-copy');
+            $icon.addClass('fa-times-circle');
+            let $span = $($btn.find('span'));
+            $span[0].innerText = 'COPY FAILED';
+            wait(function () {
+                $icon.removeClass('fa-times-circle');
+                $icon.addClass('fa-copy');
+                $span[0].innerText = 'COPY'
+            }, 2000)
+        })
+    }
+    $(function () {
+        pjax_initCopyCode()
+    });
+	volantis.pjax.push(pjax_initCopyCode)
+</script>
+
+
+
+
+   <script type="text/javascript">
+  loadScript("https://npm.elemecdn.com/scrollreveal@4.0.6/dist/scrollreveal.min.js")
+  function pjax_scrollrebeal() {
+    ScrollReveal().reveal('.l_main .reveal', {
+      distance: '32px',
+      duration: '800',
+      interval: '20',
+      scale: '1',
+      easing: 'ease-out'
+    });
+  }
+  $(function () {
+  var checkScrollReveal = setInterval(function () {
+    if ($("#safearea").css("display")!="block") return
+    if (typeof ScrollReveal=="undefined") return
+    clearInterval(checkScrollReveal)
+	pjax_scrollrebeal();
+  }, 100)
+  });
+  volantis.pjax.push(pjax_scrollrebeal)
+</script>
+
+
+
+
+  <script>
+  let APlayerController = new Object();
+  APlayerController.id = '7986662494';  // 设定全局音乐播放ID
+  APlayerController.volume = '0.7';
+  loadCSS("https://cdn.jsdelivr.net/npm/aplayer@1.10/dist/APlayer.min.css", window.volantis.loadcss);
+  // APlayer 需要在  MetingJS 之前加载
+  loadScript("https://npm.elemecdn.com/aplayer@1.10/dist/APlayer.min.js")
+  window.volantis.APlayerLoaded=0 // APlayer加载完成状态
+  var checkAPlayer = setInterval(function () {
+    if (!window.APlayer) return // APlayer加载完成？
+	  if ($("#safearea").css("display")!="block") return // 文章内容加载完成？ see: source/css/first.styl
+    clearInterval(checkAPlayer)
+	  if (!window.volantis.APlayerLoaded&&!window.MetingJSElement){ // APlayer只能加载一次
+      window.volantis.APlayerLoaded=1 // APlayer加载完成
+      loadScript("https://npm.elemecdn.com/meting@2.0/dist/Meting.min.js") // 加载 MetingJS
+	  }
+  }, 2500) // 按照网速调节差分2.5s
+  // rightmenu see: layout/_partial/rightmenu.ejs
+
+  
+    loadScript("/js/aplayer.js")
+  
+
+</script>
+
+
+
+
+  <script>
+  function load_twikoo() {
+	
+	  loadScript('https://npm.elemecdn.com/twikoo@1.5.0/dist/twikoo.all.min.js', pjax_twikoo)
+	
+  }
+  function pjax_twikoo() {
+    if(!document.querySelectorAll("#twikoo_container")[0])return;
+    let path = pdata.commentPath;
+    if (path.length == 0) {
+      let defaultPath = '';
+      path = defaultPath || "decodeURI(window.location.pathname)"; //神奇的pathname
+    }
+    twikoo.init(Object.assign({"js":"https://npm.elemecdn.com/twikoo@1.5.0/dist/twikoo.all.min.js","path":null,"envId":"twikoo-9g35ri44f12bc7f2"}, {
+	  el: '#twikoo_container',
+	  path: path,
+    }))
+  }
+  $(function () {
+    if(!document.querySelectorAll("#twikoo_container")[0])return;
+    load_twikoo();
+  });
+   volantis.pjax.push(()=>{
+	  if (typeof twikoo == "undefined") {
+		load_twikoo();
+	  } else {
+		pjax_twikoo();
+	  }
+   },'twikoo');
+</script>
+
+
+
+
+
+  
+<script src="/js/app.js"></script>
+
+
+
+<!-- optional -->
+
+  <script>
+const SearchServiceimagePath="https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@master/img/";
+const ROOT =  ("/" || "/").endsWith('/') ? ("/" || "/") : ("//" || "/" );
+
+$('.input.u-search-input').one('focus',function(){
+	
+		loadScript('https://fastly.jsdelivr.net/gh/volantis-x/cdn-volantis@master/js/search.js',setSearchService);
+	
+})
+
+function listenSearch(){
+  
+    customSearch = new HexoSearch({
+      imagePath: SearchServiceimagePath
+    });
+  
+}
+function setSearchService() {
+	listenSearch();
+	
+}
+</script>
+
+
+
+
+
+
+
+
+
+
+
+  <script defer>
+
+  const LCCounter = {
+    app_id: '3YfE4T5oes25Q5TWcnaQq3hP-MdYXbMMI',
+    app_key: 'GV1F2ALcQ938V8Mj1qpBxwBB',
+    custom_api_server: '',
+
+    // 查询存储的记录
+    getRecord(Counter, url, title) {
+      return new Promise(function (resolve, reject) {
+        Counter('get', '/classes/Counter?where=' + encodeURIComponent(JSON.stringify({url})))
+          .then(resp => resp.json())
+          .then(({results, code, error}) => {
+            if (code === 401) {
+              throw error;
+            }
+            if (results && results.length > 0) {
+              var record = results[0];
+              resolve(record);
+            } else {
+              Counter('post', '/classes/Counter', {url, title: title, times: 0})
+                .then(resp => resp.json())
+                .then((record, error) => {
+                  if (error) {
+                    throw error;
+                  }
+                  resolve(record);
+                }).catch(error => {
+                console.error('Failed to create', error);
+                reject(error);
+              });
+            }
+          }).catch((error) => {
+          console.error('LeanCloud Counter Error:', error);
+          reject(error);
+        });
+      })
+    },
+
+    // 发起自增请求
+    increment(Counter, incrArr) {
+      return new Promise(function (resolve, reject) {
+        Counter('post', '/batch', {
+          "requests": incrArr
+        }).then((res) => {
+          res = res.json();
+          if (res.error) {
+            throw res.error;
+          }
+          resolve(res);
+        }).catch((error) => {
+          console.error('Failed to save visitor count', error);
+          reject(error);
+        });
+      });
+    },
+
+    // 构建自增请求体
+    buildIncrement(objectId) {
+      return {
+        "method": "PUT",
+        "path": `/1.1/classes/Counter/${ objectId }`,
+        "body": {
+          "times": {
+            '__op': 'Increment',
+            'amount': 1
+          }
+        }
+      }
+    },
+
+    // 校验是否为有效的 UV
+    validUV() {
+      var key = 'LeanCloudUVTimestamp';
+      var flag = localStorage.getItem(key);
+      if (flag) {
+        // 距离标记小于 24 小时则不计为 UV
+        if (new Date().getTime() - parseInt(flag) <= 86400000) {
+          return false;
+        }
+      }
+      localStorage.setItem(key, new Date().getTime().toString());
+      return true;
+    },
+
+    addCount(Counter) {
+      var enableIncr = '' === 'true' && window.location.hostname !== 'localhost';
+      enableIncr = true;
+      var getterArr = [];
+      var incrArr = [];
+      // 请求 PV 并自增
+      var pvCtn = document.querySelector('#lc-sv');
+      if (pvCtn || enableIncr) {
+        var pvGetter = this.getRecord(Counter, 'https://blog.imsyy.top' + '/#lc-sv', 'Visits').then((record) => {
+          incrArr.push(this.buildIncrement(record.objectId))
+          var eles = document.querySelectorAll('#lc-sv #number');
+          if (eles.length > 0) {
+            eles.forEach((el,index,array)=>{
+              el.innerText = record.times + 1;
+              if (pvCtn) {
+                pvCtn.style.display = 'inline';
+              }
+            })
+          }
+        });
+        getterArr.push(pvGetter);
+      }
+
+      // 请求 UV 并自增
+      var uvCtn = document.querySelector('#lc-uv');
+      if (uvCtn || enableIncr) {
+        var uvGetter = this.getRecord(Counter, 'https://blog.imsyy.top' + '/#lc-uv', 'Visitors').then((record) => {
+          var vuv = this.validUV();
+          vuv && incrArr.push(this.buildIncrement(record.objectId))
+          var eles = document.querySelectorAll('#lc-uv #number');
+          if (eles.length > 0) {
+            eles.forEach((el,index,array)=>{
+              el.innerText = record.times + (vuv ? 1 : 0);
+              if (uvCtn) {
+                uvCtn.style.display = 'inline';
+              }
+            })
+          }
+        });
+        getterArr.push(uvGetter);
+      }
+
+      // 请求文章的浏览数，如果是当前页面就自增
+      var allPV = document.querySelectorAll('#lc-pv');
+      if (allPV.length > 0 || enableIncr) {
+        for (i = 0; i < allPV.length; i++) {
+          let pv = allPV[i];
+          let title = pv.getAttribute('data-title');
+          var url = 'https://blog.imsyy.top' + pv.getAttribute('data-path');
+          if (url) {
+            var viewGetter = this.getRecord(Counter, url, title).then((record) => {
+              // 是当前页面就自增
+              let curPath = window.location.pathname;
+              if (curPath.includes('index.html')) {
+                curPath = curPath.substring(0, curPath.lastIndexOf('index.html'));
+              }
+              if (pv.getAttribute('data-path') == curPath) {
+                incrArr.push(this.buildIncrement(record.objectId));
+              }
+              if (pv) {
+                var ele = pv.querySelector('#lc-pv #number');
+                if (ele) {
+                  if (pv.getAttribute('data-path') == curPath) {
+                    ele.innerText = (record.times || 0) + 1;
+                  } else {
+                    ele.innerText = record.times || 0;
+                  }
+                  pv.style.display = 'inline';
+                }
+              }
+            });
+            getterArr.push(viewGetter);
+          }
+        }
+      }
+
+      // 如果启动计数自增，批量发起自增请求
+      if (enableIncr) {
+        Promise.all(getterArr).then(() => {
+          incrArr.length > 0 && this.increment(Counter, incrArr);
+        })
+      }
+
+    },
+
+
+    fetchData(api_server) {
+      var Counter = (method, url, data) => {
+        return fetch(`${ api_server }/1.1${ url }`, {
+          method,
+          headers: {
+            'X-LC-Id': this.app_id,
+            'X-LC-Key': this.app_key,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+      };
+      this.addCount(Counter);
+    },
+
+    refreshCounter() {
+      var api_server = this.app_id.slice(-9) !== '-MdYXbMMI' ? this.custom_api_server : `https://${ this.app_id.slice(0, 8).toLowerCase() }.api.lncldglobal.com`;
+      if (api_server) {
+        this.fetchData(api_server);
+      } else {
+        fetch('https://app-router.leancloud.cn/2/route?appId=' + this.app_id)
+          .then(resp => resp.json())
+          .then(({api_server}) => {
+            this.fetchData('https://' + api_server);
+          });
+      }
+    }
+
+  };
+
+  LCCounter.refreshCounter();
+
+  document.addEventListener('pjax:complete', function () {
+    LCCounter.refreshCounter();
+  });
+</script>
+
+
+
+
+  <!--自动夜间模式-->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/gh/Colsrch/CDN@master/judge_time/js.js"></script>
+
+<script>
+const rootElement = document.documentElement;
+const darkModeStorageKey = "user-color-scheme";
+const rootElementDarkModeAttributeName = "data-user-color-scheme";
+
+const setLS = (k, v) => {
+    localStorage.setItem(k, v);
+};
+
+const removeLS = (k) => {
+    localStorage.removeItem(k);
+};
+
+const getLS = (k) => {
+    return localStorage.getItem(k);
+};
+
+const getModeFromCSSMediaQuery = () => {
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+};
+
+const resetRootDarkModeAttributeAndLS = () => {
+  rootElement.removeAttribute(rootElementDarkModeAttributeName);
+  removeLS(darkModeStorageKey);
+};
+
+const validColorModeKeys = {
+  dark: true,
+  light: true,
+};
+
+const applyCustomDarkModeSettings = (mode) => {
+  const currentSetting = mode || getLS(darkModeStorageKey);
+
+  if (currentSetting === getModeFromCSSMediaQuery()) {
+    resetRootDarkModeAttributeAndLS();
+  } else if (validColorModeKeys[currentSetting]) {
+    rootElement.setAttribute(rootElementDarkModeAttributeName, currentSetting);
+  } else {
+    resetRootDarkModeAttributeAndLS();
+  }
+};
+
+const invertDarkModeObj = {
+  dark: "light",
+  light: "dark",
+};
+
+/**
+ * get target mode
+ */
+const toggleCustomDarkMode = () => {
+  let currentSetting = getLS(darkModeStorageKey);
+
+  if (validColorModeKeys[currentSetting]) {
+    currentSetting = invertDarkModeObj[currentSetting];
+  } else if (currentSetting === null) {
+    currentSetting = invertDarkModeObj[getModeFromCSSMediaQuery()];
+  } else {
+    return;
+  }
+  setLS(darkModeStorageKey, currentSetting);
+  return currentSetting;
+};
+
+/**
+ * bind click event for toggle button
+ */
+var btn=$("#wrapper .toggle-mode-btn,#rightmenu-wrapper .toggle-mode-btn");
+function bindToggleButton() {
+    btn.on('click',(e) => {
+      const mode = toggleCustomDarkMode();
+      applyCustomDarkModeSettings(mode);
+      // 添加弹窗
+      iziToast.info({
+            timeout: 4000, //调试
+            icon: 'Fontawesome',
+            closeOnEscape: 'true',
+            transitionOut: 'fadeOutRight',
+            displayMode: 'replace',
+            layout: '2',
+            transitionIn: 'bounceInLeft',
+            position: 'topRight',
+            icon: 'fad fa-adjust',
+            backgroundColor: '#fff',
+            title: '明暗切换',
+            message: '已手动切换明暗模式'
+        });
+    });
+}
+
+applyCustomDarkModeSettings();
+document.addEventListener("DOMContentLoaded", bindToggleButton);
+volantis.pjax.push(bindToggleButton);
+volantis.pjax.send(()=>{
+	btn.unbind('click');
+},'toggle-mode-btn-unbind');
+
+/*添加代码*/
+// 自动夜间模式
+if (navigator.geolocation) {   //获取地理位置 用于判断日出日落时间
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        var res = computeSunRiseSunSet(position.coords.latitude, position.coords.longitude, 8);
+        console.log(res.str)
+        adjust_time(res.strSunRise, res.strSunSet, "08:00", "12:00", "14:00", "23:00")
+      },
+      function (e) {
+        adjust_time("7:00", "17:30", "08:00", "12:00", "14:00", "23:00")  //未允许获取地理位置时，使用默认时间
+        console.log("未允许获取地理位置，使用默认配置时间")
+        iziToast.info({
+            timeout: 6000, //调试
+            icon: 'Fontawesome',
+            closeOnEscape: 'true',
+            transitionOut: 'fadeOutRight',
+            displayMode: 'replace',
+            layout: '2',
+            transitionIn: 'bounceInLeft',
+            position: 'topRight',
+            icon: 'fad fa-times-circle',
+            backgroundColor: '#fff',
+            title: '权限获取错误',
+            message: '未允许获取地理位置<p style="margin-top: 4px;">将使用默认配置时间</p>'
+        });
+        throw (e.message);
+      }
+    )
+  }
+function adjust_time(beginTime, endTime, morningTime, noonTime, afternoonTime, nightTime) {
+  const rootElement = document.documentElement;
+  var strb = beginTime.split(":");
+  if (strb.length != 2) {
+    return false;
+  }
+
+  var stre = endTime.split(":");
+  if (stre.length != 2) {
+    return false;
+  }
+
+  var strmorning = morningTime.split(":");   //12点
+  if (stre.length != 2) {
+    return false;
+  }
+
+  var strnoon = noonTime.split(":");   //12点
+  if (stre.length != 2) {
+    return false;
+  }
+
+  var strafternoon = afternoonTime.split(":");   //13点
+  if (stre.length != 2) {
+    return false;
+  }
+
+  var strnight = nightTime.split(":");   //23点
+  if (stre.length != 2) {
+    return false;
+  }
+
+  var b = new Date();
+  var e = new Date();
+  var n = new Date();
+  var morning = new Date();
+  var noon = new Date();
+  var afternoon = new Date();
+  var night = new Date();
+
+  b.setHours(strb[0]);
+  b.setMinutes(strb[1]);
+  e.setHours(stre[0]);
+  e.setMinutes(stre[1]);
+  morning.setHours(strmorning[0]);
+  morning.setMinutes(strmorning[1]);
+  noon.setHours(strnoon[0]);
+  noon.setMinutes(strnoon[1]);
+  afternoon.setHours(strafternoon[0]);
+  afternoon.setMinutes(strafternoon[1]);
+  night.setHours(strnight[0]);
+  night.setMinutes(strnight[1]);
+
+
+  $.getJSON("https://v1.hitokoto.cn", function (hitokoto) {
+    //在这里面处理获得的数据
+    if (n.getTime() - b.getTime() > 0 && n.getTime() - e.getTime() < 0) {
+      var daytimetitle = ''
+      var daytimemessage = ''
+      if (n.getTime() - morning.getTime() < 0) {
+        // 早上
+        daytimetitle = '早安'
+      }
+      else if (n.getTime() - noon.getTime() < 0) {
+        // 上午
+        daytimetitle = '上午好'
+      }
+      else if (n.getTime() - afternoon.getTime() < 0) {
+        // 中午
+        daytimetitle = '中午好'
+        daytimemessage = '<br>要注意休息哦~'
+      }
+      else {
+        // 下午
+        daytimetitle = '下午好'
+      }
+      // 判断是否已经开启夜间模式
+      if (rootElement.getAttribute('data-user-color-scheme', 'dark')) {
+        // 已开启夜间模式，修改按钮状态
+        iziToast.info({
+            timeout: 4000, //调试
+            icon: 'Fontawesome',
+            closeOnEscape: 'true',
+            transitionOut: 'fadeOutRight',
+            displayMode: 'replace',
+            layout: '2',
+            transitionIn: 'bounceInLeft',
+            position: 'topRight',
+            icon: 'fad fa-sun',
+            backgroundColor: '#fff',
+            title: '日间模式切换',
+            message: daytimetitle + '，已自动为您切换为日间模式'
+        });
+        const mode = toggleCustomDarkMode();
+        applyCustomDarkModeSettings(mode);
+      }
+      else {
+        // 未开启夜间模式，不执行操作
+        iziToast.info({
+            timeout: 4000, //调试
+            icon: 'Fontawesome',
+            closeOnEscape: 'true',
+            transitionOut: 'fadeOutRight',
+            displayMode: 'replace',
+            layout: '2',
+            transitionIn: 'bounceInLeft',
+            position: 'topRight',
+            icon: 'fad fa-comment-alt-smile',
+            backgroundColor: '#fff',
+            title: daytimetitle + '呀',
+            message: hitokoto.hitokoto
+        });
+        return true;
+      }
+    } else {
+      // 晚上
+      var nighttitle = ''
+      var nightmessage = ''
+      if (night.getTime() - n.getTime() < 0 || n.getTime() - b.getTime() < 0) {
+        nighttitle = '夜深了'
+        nightmessage = '<br>该睡觉啦~'
+      }
+      else {
+        nighttitle = '晚上好'
+        nightmessage = '<br>吃晚饭了吗？要注意眼睛哦。'
+      }
+      // 判断是否已经开启夜间模式
+      if (rootElement.getAttribute('data-user-color-scheme', 'dark')) {
+        // 已开启夜间模式，不执行操作
+        iziToast.info({
+            timeout: 4000, //调试
+            icon: 'Fontawesome',
+            closeOnEscape: 'true',
+            transitionOut: 'fadeOutRight',
+            displayMode: 'replace',
+            layout: '2',
+            transitionIn: 'bounceInLeft',
+            position: 'topRight',
+            icon: 'fad fa-comment-alt-smile',
+            backgroundColor: '#fff',
+            title: nighttitle + '呀',
+            message: hitokoto.hitokoto
+        });
+        return true;
+      }
+      else {
+        // 未开启夜间模式，修改按钮状态
+         iziToast.info({
+            timeout: 4000, //调试
+            icon: 'Fontawesome',
+            closeOnEscape: 'true',
+            transitionOut: 'fadeOutRight',
+            displayMode: 'replace',
+            layout: '2',
+            transitionIn: 'bounceInLeft',
+            position: 'topRight',
+            icon: 'fas fa-moon',
+            backgroundColor: '#fff',
+            title: '夜间模式切换',
+            message: nighttitle + '，已自动为您切换为夜间模式'
+        });
+        const mode = toggleCustomDarkMode();
+        applyCustomDarkModeSettings(mode);
+      }
+    }
+  });
+}
+</script>
+
+
+
+
+
+
+
+
+<script>
+function listennSidebarTOC() {
+  const navItems = document.querySelectorAll(".toc li");
+  if (!navItems.length) return;
+  const sections = [...navItems].map((element) => {
+    const link = element.querySelector(".toc-link");
+    const target = document.getElementById(
+      decodeURI(link.getAttribute("href")).replace("#", "")
+    );
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      window.scrollTo({
+		top: target.offsetTop + 100,
+		
+		behavior: "smooth"
+		
+	  });
+    });
+    return target;
+  });
+
+  function activateNavByIndex(target) {
+    if (target.classList.contains("active-current")) return;
+
+    document.querySelectorAll(".toc .active").forEach((element) => {
+      element.classList.remove("active", "active-current");
+    });
+    target.classList.add("active", "active-current");
+    let parent = target.parentNode;
+    while (!parent.matches(".toc")) {
+      if (parent.matches("li")) parent.classList.add("active");
+      parent = parent.parentNode;
+    }
+  }
+
+  function findIndex(entries) {
+    let index = 0;
+    let entry = entries[index];
+    if (entry.boundingClientRect.top > 0) {
+      index = sections.indexOf(entry.target);
+      return index === 0 ? 0 : index - 1;
+    }
+    for (; index < entries.length; index++) {
+      if (entries[index].boundingClientRect.top <= 0) {
+        entry = entries[index];
+      } else {
+        return sections.indexOf(entry.target);
+      }
+    }
+    return sections.indexOf(entry.target);
+  }
+
+  function createIntersectionObserver(marginTop) {
+    marginTop = Math.floor(marginTop + 10000);
+    let intersectionObserver = new IntersectionObserver(
+      (entries, observe) => {
+        let scrollHeight = document.documentElement.scrollHeight + 100;
+        if (scrollHeight > marginTop) {
+          observe.disconnect();
+          createIntersectionObserver(scrollHeight);
+          return;
+        }
+        let index = findIndex(entries);
+        activateNavByIndex(navItems[index]);
+      },
+      {
+        rootMargin: marginTop + "px 0px -100% 0px",
+        threshold: 0,
+      }
+    );
+    sections.forEach((element) => {
+      element && intersectionObserver.observe(element);
+    });
+  }
+  createIntersectionObserver(document.documentElement.scrollHeight);
+}
+
+document.addEventListener("DOMContentLoaded", listennSidebarTOC);
+document.addEventListener("pjax:success", listennSidebarTOC);
+</script>
+
+<!-- more -->
+
+  
+  <script defer type="text/javascript" src="https://player.dogecloud.com/js/loader"></script>
+
+  <script defer type="text/javascript" src="https://cdn.jsdelivr.net/npm/artitalk"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/gh/zhheo/JS-Heo@main/privacy/privacy.js"></script>
+
+
+
+
+<!-- 自定义添加 -->
+<!--加载动画-->
+<script>
+  // window.addEventListener('load', function () {
+  //   $('#loading-box').attr('class', 'loaded');
+  //   $('#l_body').css("cssText", "transform: scale(1) !important;opacity: 1 !important;filter: blur(0px) !important");
+  // }, false)
+  setTimeout(function () {
+    $('#loading-box').attr('class', 'loaded');
+    $('#l_body').css("cssText",
+      "transform: scale(1) !important;opacity: 1 !important;filter: blur(0px) !important");
+  }, 5000);
+  $("#skip").click(function () {
+    $('#loading-box').attr('class', 'loaded');
+  });
+</script>
+
+<!-- 复制提醒 -->
+<script>
+  document.body.oncopy = function () {
+    iziToast.info({
+      timeout: 4000,
+      icon: 'Fontawesome',
+      closeOnEscape: 'true',
+      transitionOut: 'fadeOutRight',
+      displayMode: 'replace',
+      layout: '2',
+      transitionIn: 'bounceInLeft',
+      position: 'topRight',
+      icon: 'fad fa-copy',
+      backgroundColor: '#fff',
+      title: '复制成功',
+      message: '请遵守 CC BY-NC-SA 4.0 协议'
+    });
+  }
+</script>
+
+<!-- 新春灯笼 -->
+<!-- <script src="https://cdn.jsdelivr.net/gh/fz6m/china-lantern@1.6/dist/china-lantern.min.js"></script>
+<style>
+    .lantern__warpper {
+        z-index: 1000;
+    }
+
+    @media screen and (max-width:1300px) {
+        .lantern__warpper {
+            display: none;
+        }
+    }
+</style> -->
+
+<!-- 自动变灰 -->
+<script>
+  var myDate = new Date;
+  var mon = myDate.getMonth() + 1;
+  var date = myDate.getDate();
+  var days = ['4.4', '5.12', '7.7', '9.9', '9.18', '12.13'];
+  for (var day of days) {
+    var d = day.split('.');
+    if (mon == d[0] && date == d[1]) {
+      document.write(
+        '<style>html{-webkit-filter:grayscale(100%);-moz-filter:grayscale(100%);-ms-filter:grayscale(100%);-o-filter:grayscale(100%);filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);_filter:none}</style>'
+      )
+      console.log('今天是纪念日');
+      console.log('默哀...');
+      /*
+      iziToast.info({
+          timeout: 14000,
+          icon: 'Fontawesome',
+          closeOnEscape: 'true',
+          transitionOut: 'fadeOutRight',
+          layout: '2',
+          transitionIn: 'bounceInLeft',
+          position: 'topRight',
+          icon: 'fad fa-candle-holder',
+          backgroundColor: '#fff',
+          title: '今天是国家纪念日',
+          message: '历史不会忘记，人民永远铭记！<p style="margin-top: 4px;">全站已切换为黑白模式</p>'
+      });
+      */
+    }
+  }
+</script>
+
+<!--控制台输出-->
+<script>
+  if (window.console) {
+    var cons = console;
+    if (cons) {
+      console.log('%c欢迎来到本站',
+        'color:#fff; background: #5e72e4;font-size: 12px;border-radius:5px;padding:3px 10px 3px 10px;');
+      console.log('%c本站基于 Hexo 搭建',
+        'color:#fff; background: #5e72e4;font-size: 12px;border-radius:5px;padding:3px 10px 3px 10px;');
+      console.log('%c主题采用 Volantis 4.3.1 版本',
+        'font-size: 12px;border-radius:5px;padding:3px 10px 3px 10px;border:1px solid #5e72e4;');
+    }
+  }
+</script>
+
+<!--时间胶囊-->
+<script>
+  function init_life_time() {
+    function getAsideLifeTime() {
+      /* 当前时间戳 */
+      let nowDate = +new Date();
+      /* 今天开始时间戳 */
+      let todayStartDate = new Date(new Date().toLocaleDateString()).getTime();
+      /* 今天已经过去的时间 */
+      let todayPassHours = (nowDate - todayStartDate) / 1000 / 60 / 60;
+      /* 今天已经过去的时间比 */
+      let todayPassHoursPercent = (todayPassHours / 24) * 100;
+      $('#dayProgress .date-text span').html(parseInt(todayPassHours));
+      $('#dayProgress .progress .progress-bar').css('width', parseInt(todayPassHoursPercent) + '%');
+      $('#dayProgress .progress .progress-bar').html(parseInt(todayPassHoursPercent) + '%');
+      /* 当前周几 */
+      let weeks = {
+        0: 7,
+        1: 1,
+        2: 2,
+        3: 3,
+        4: 4,
+        5: 5,
+        6: 6
+      };
+      let weekDay = weeks[new Date().getDay()];
+      let weekDayPassPercent = (weekDay / 7) * 100;
+      $('#weekProgress .date-text span').html(weekDay);
+      $('#weekProgress .progress .progress-bar').css('width', parseInt(weekDayPassPercent) + '%');
+      $('#weekProgress .progress .progress-bar').html(parseInt(weekDayPassPercent) + '%');
+      /* 月 */
+      let year = new Date().getFullYear();
+      let date = new Date().getDate();
+      let month = new Date().getMonth() + 1;
+      let monthAll = new Date(year, month, 0).getDate();
+      let monthPassPercent = (date / monthAll) * 100;
+      $('#monthProgress .date-text span').html(date);
+      $('#monthProgress .progress .progress-bar').css('width', parseInt(monthPassPercent) + '%');
+      $('#monthProgress .progress .progress-bar').html(parseInt(monthPassPercent) + '%');
+      /* 年 */
+      let yearPass = (month / 12) * 100;
+      $('#yearProgress .date-text span').html(month);
+      $('#yearProgress .progress .progress-bar').css('width', parseInt(yearPass) + '%');
+      $('#yearProgress .progress .progress-bar').html(parseInt(yearPass) + '%');
+    }
+    getAsideLifeTime();
+    setInterval(() => {
+      getAsideLifeTime();
+    }, 1000);
+  }
+  init_life_time()
+</script>
+
+<!--鼠标样式
+<script>
+    var CURSOR;
+  
+    Math.lerp = (a, b, n) => (1 - n) * a + n * b;
+  
+    const getStyle = (el, attr) => {
+      try {
+        return window.getComputedStyle ?
+          window.getComputedStyle(el)[attr] :
+          el.currentStyle[attr];
+      } catch (e) {}
+      return "";
+    };
+  
+    class Cursor {
+      constructor() {
+        this.pos = {
+          curr: null,
+          prev: null
+        };
+        this.pt = [];
+        this.create();
+        this.init();
+        this.render();
+      }
+  
+      move(left, top) {
+        this.cursor.style["left"] = `${left}px`;
+        this.cursor.style["top"] = `${top}px`;
+      }
+  
+      create() {
+        if (!this.cursor) {
+          this.cursor = document.createElement("div");
+          this.cursor.id = "cursor";
+          this.cursor.classList.add("hidden");
+          document.body.append(this.cursor);
+        }
+  
+        var el = document.getElementsByTagName('*');
+        for (let i = 0; i < el.length; i++)
+          if (getStyle(el[i], "cursor") == "pointer")
+            this.pt.push(el[i].outerHTML);
+  
+        document.body.appendChild((this.scr = document.createElement("style")));
+        this.scr.innerHTML =
+          `* {cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8' width='8px' height='8px'><circle cx='4' cy='4' r='4' opacity='.5'/></svg>") 4 4, auto}`;
+      }
+  
+      refresh() {
+        this.scr.remove();
+        this.cursor.classList.remove("hover");
+        this.cursor.classList.remove("active");
+        this.pos = {
+          curr: null,
+          prev: null
+        };
+        this.pt = [];
+  
+        this.create();
+        this.init();
+        this.render();
+      }
+  
+      init() {
+        document.onmouseover = e => this.pt.includes(e.target.outerHTML) && this.cursor.classList.add("hover");
+        document.onmouseout = e => this.pt.includes(e.target.outerHTML) && this.cursor.classList.remove("hover");
+        document.onmousemove = e => {
+          (this.pos.curr == null) && this.move(e.clientX - 8, e.clientY - 8);
+          this.pos.curr = {
+            x: e.clientX - 8,
+            y: e.clientY - 8
+          };
+          this.cursor.classList.remove("hidden");
+        };
+        document.onmouseenter = e => this.cursor.classList.remove("hidden");
+        document.onmouseleave = e => this.cursor.classList.add("hidden");
+        document.onmousedown = e => this.cursor.classList.add("active");
+        document.onmouseup = e => this.cursor.classList.remove("active");
+      }
+  
+      render() {
+        if (this.pos.prev) {
+          this.pos.prev.x = Math.lerp(this.pos.prev.x, this.pos.curr.x, 0.45);
+          this.pos.prev.y = Math.lerp(this.pos.prev.y, this.pos.curr.y, 0.45);
+          this.move(this.pos.prev.x, this.pos.prev.y);
+        } else {
+          this.pos.prev = this.pos.curr;
+        }
+        requestAnimationFrame(() => this.render());
+      }
+    }
+  
+    (() => {
+      CURSOR = new Cursor();
+      // 需要重新获取列表时，使用 CURSOR.refresh()
+    })();
+  </script>-->
+
+    
+    
+
+
+<script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script>
+
+
+<!-- 样式位于：source/css/_plugins/pjaxanimate.styl -->
+
+<div class="pjax-animate">
+  
+    <script src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.js"></script>
+    <div id="loading-bar-wrapper"><script>NProgress.configure({parent:"#loading-bar-wrapper",trickleSpeed: 100})</script></div>
+    <script>
+      window.ShowLoading = function() {
+        NProgress.start();
+      };
+      window.HideLoading = function() {
+        NProgress.done();
+      }
+    </script>
+  
+	<script>
+		volantis.pjax.push(window.HideLoading,'HideLoading');
+		volantis.pjax.send(window.ShowLoading,'ShowLoading');
+		volantis.pjax.error(window.HideLoading,'HideLoading');
+	</script>
+</div>
+
+
+<script>
+    var pjax;
+    document.addEventListener('DOMContentLoaded', function () {
+      pjax = new Pjax({
+        elements: 'a[href]:not([href^="#"]):not([href="javascript:void(0)"]):not([pjax-fancybox])',
+        selectors: [
+          "title",
+          
+          "#pjax-container",
+          "#pjax-header-nav-list"
+        ],
+        cacheBust: false,   // url 地址追加时间戳，用以避免浏览器缓存
+        timeout: 8000
+      });
+    });
+
+    document.addEventListener('pjax:send', function (e) {
+      //window.stop(); // 相当于点击了浏览器的停止按钮
+
+      try {
+        var currentUrl = window.location.pathname;
+        var targetUrl = e.triggerElement.href;
+        var banUrl = [""];
+        if (banUrl[0] != "") {
+          banUrl.forEach(item => {
+            if(currentUrl.indexOf(item) != -1 || targetUrl.indexOf(item) != -1) {
+              window.location.href = targetUrl;
+            }
+          });
+        }
+      } catch (error) {}
+
+      window.subData = null; // 移除标题（用于一二级导航栏切换处）
+
+      volantis.$switcher.removeClass('active'); // 关闭移动端激活的搜索框
+      volantis.$header.removeClass('z_search-open'); // 关闭移动端激活的搜索框
+      volantis.$wrapper.removeClass('sub'); // 跳转页面时关闭二级导航
+
+      // 解绑事件 避免重复监听
+      volantis.$topBtn.unbind('click');
+      $('.menu a').unbind('click');
+      $(window).unbind('resize');
+      $(window).unbind('scroll');
+      $(document).unbind('scroll');
+      $(document).unbind('click');
+      $('body').unbind('click');
+	  // 使用 volantis.pjax.send 方法传入pjax:send回调函数 参见layout/_partial/scripts/global.ejs
+	  volantis.pjax.method.send.start();
+    });
+
+    document.addEventListener('pjax:complete', function () {
+      $('.nav-main').find('.list-v').not('.menu-phone').removeAttr("style",""); // 移除小尾巴的移除
+      $('.menu-phone.list-v').removeAttr("style",""); // 移除小尾巴的移除
+      $('script[data-pjax], .pjax-reload script').each(function () {
+        $(this).parent().append($(this).remove());
+      });
+      try{
+		// 使用 volantis.pjax.push 方法传入重载函数 参见layout/_partial/scripts/global.ejs
+		volantis.pjax.method.complete.start();
+      } catch (e) {
+        console.log(e);
+      }
+    });
+
+    document.addEventListener('pjax:error', function (e) {
+	  // 使用 volantis.pjax.error 方法传入pjax:error回调函数 参见layout/_partial/scripts/global.ejs
+    // 添加弹窗
+    iziToast.info({
+        timeout: 4000, //调试
+        icon: 'Fontawesome',
+        closeOnEscape: 'true',
+        transitionOut: 'fadeOutRight',
+        displayMode: 'replace',
+        layout: '2',
+        transitionIn: 'bounceInLeft',
+        position: 'topRight',
+        icon: 'fad fa-exclamation-circle',
+        backgroundColor: '#fff',
+        title: '错误提示',
+        message: 'Pjax 加载失败，正在强制刷新'
+      });
+	  volantis.pjax.method.error.start();
+      window.location.href = e.triggerElement.href;
+    });
+</script>
+
+    
+  </div>
+<style>
+        .tiy-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            border: 1px solid #eee;
+            margin: 1rem 0;
+            width: 100%;
+            height: 500px;
+        }
+        
+        .tiy-container iframe {
+            position: relative;
+            top: 0;
+            display: inline-block;
+            background-color: white;
+        }
+        
+        @media screen and (max-width: 600px) {
+            .tiy-container {
+                height: 700px;
+                width: 100%;
+            }
+        }
+        </style></body>
+
+</html>
